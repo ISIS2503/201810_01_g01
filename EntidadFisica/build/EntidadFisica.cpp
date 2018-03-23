@@ -1,7 +1,18 @@
       #include <Keypad.h>
       //-------------------------------------------
       #define SIZE_BUFFER_DATA       50
-      boolean     stringComplete = false;
+      #include "WProgram.h"
+void setup();
+void loop();
+void teclado();
+void revisarBateria();
+void revisarMovimiento();
+void darColor(char a);
+boolean correcto();
+void registrarDigito(char key);
+void receiveData();
+void processData();
+boolean     stringComplete = false;
       String      inputString = "";
       char        bufferData [SIZE_BUFFER_DATA];
       //-------------------------------------------
@@ -71,7 +82,7 @@
         //contador tiempo pasado
         int contadorPasado = 0;
         
-        // contraseñas
+        // contrase\u00f1as
         char contrasenias [4][4]={{'1','2','3','4'}, 
                                   {'0','0','0','0'}, 
                                   {'1','9','9','6'},
@@ -303,7 +314,8 @@
  
     void processData() {
       if (stringComplete) {
-        // Implementación...
+        // Implementaci\u00f3n...
         //Serial.println(inputString);
       }
     }
+
