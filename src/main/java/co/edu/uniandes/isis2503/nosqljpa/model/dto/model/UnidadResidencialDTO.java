@@ -23,7 +23,6 @@
  */
 package co.edu.uniandes.isis2503.nosqljpa.model.dto.model;
 
-import co.edu.uniandes.isis2503.nosqljpa.model.entity.UnidadResidencialEntity;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -174,19 +173,4 @@ public class UnidadResidencialDTO {
         this.residencias.add(id);
     }
     
-    
-    public UnidadResidencialEntity DTOToentity()
-    {
-        UnidadResidencialEntity dto = new UnidadResidencialEntity();
-        dto.setId(this.getId());
-        dto.setNombre(this.getNombre());
-        dto.setDireccion(this.getDireccion());
-        dto.setEstrato(this.getEstrato());
-        dto.setBarrio(this.getBarrio());
-        dto.setResidencias(this.getResidencias());
-        dto.setAdministrador(this.getAdministrador());
-        dto.setCentralYale(this.getCentralYale());
-        
-        return dto;
-    }
 }

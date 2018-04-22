@@ -23,6 +23,8 @@
  */
 package co.edu.uniandes.isis2503.nosqljpa.service;
 
+import co.edu.uniandes.isis2503.nosqljpa.auth.AuthorizationFilter.Role;
+import co.edu.uniandes.isis2503.nosqljpa.auth.Secured;
 import co.edu.uniandes.isis2503.nosqljpa.interfaces.IResidenciaLogic;
 import co.edu.uniandes.isis2503.nosqljpa.logic.ResidenciaLogic;
 import co.edu.uniandes.isis2503.nosqljpa.model.dto.model.ResidenciaDTO;
@@ -44,6 +46,7 @@ import javax.ws.rs.core.Response;
  * @author m.sicard10
  */
 @Path("/residencia")
+@Secured({Role.administrador, Role.propietario, Role.yale, Role.seguridadPrivada})
 @Produces(MediaType.APPLICATION_JSON)
 public class ResidenciaService {
     

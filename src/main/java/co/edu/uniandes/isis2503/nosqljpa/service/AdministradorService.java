@@ -23,6 +23,8 @@
  */
 package co.edu.uniandes.isis2503.nosqljpa.service;
 
+import co.edu.uniandes.isis2503.nosqljpa.auth.AuthorizationFilter.Role;
+import co.edu.uniandes.isis2503.nosqljpa.auth.Secured;
 import co.edu.uniandes.isis2503.nosqljpa.interfaces.IAdministradorConverter;
 import co.edu.uniandes.isis2503.nosqljpa.interfaces.IAdministradorLogic;
 import co.edu.uniandes.isis2503.nosqljpa.interfaces.IAlarmaConverter;
@@ -33,7 +35,6 @@ import co.edu.uniandes.isis2503.nosqljpa.model.dto.converter.AdministradorConver
 import co.edu.uniandes.isis2503.nosqljpa.model.dto.converter.AlarmaConverter;
 import co.edu.uniandes.isis2503.nosqljpa.model.dto.model.AdministradorDTO;
 import co.edu.uniandes.isis2503.nosqljpa.model.dto.model.AlarmaDTO;
-import co.edu.uniandes.isis2503.nosqljpa.model.entity.AlarmaEntity;
 import com.sun.istack.logging.Logger;
 import java.util.List;
 import java.util.logging.Level;
@@ -52,6 +53,9 @@ import javax.ws.rs.core.Response;
  * @author m.sicard10
  */
 @Path("/administrador")
+
+@Secured({Role.yale, Role.administrador})
+
 @Produces(MediaType.APPLICATION_JSON)
 public class AdministradorService {
     
