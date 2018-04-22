@@ -53,9 +53,9 @@ import javax.ws.rs.core.Response;
  * @author m.sicard10
  */
 @Path("/administrador")
-
+/*/
 @Secured({Role.yale, Role.administrador})
-
+/*/
 @Produces(MediaType.APPLICATION_JSON)
 public class AdministradorService {
     
