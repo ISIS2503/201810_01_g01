@@ -36,14 +36,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class AdministradorDTO {
     private String id;
     private String nombre;
-    private UnidadResidencialDTO unidadResidencial;
-    private List<AlarmaDTO> alarmas;
+    private String unidadResidencial;
+    private List<String> alarmas;
     
     public AdministradorDTO() {
       this.alarmas = new ArrayList();
     }
 
-    public AdministradorDTO(String id, String nombre, UnidadResidencialDTO unidadResidencial,List<AlarmaDTO> alarmas) {
+    public AdministradorDTO(String id, String nombre, String unidadResidencial,List<String> alarmas) {
         this.id = id;
         this.nombre = nombre;
         this.unidadResidencial = unidadResidencial;
@@ -83,31 +83,31 @@ public class AdministradorDTO {
     /**
      * @return the unidadResidencial
      */
-    public UnidadResidencialDTO getUnidadResidencial() {
+    public String getUnidadResidencial() {
         return unidadResidencial;
     }
 
     /**
      * @param unidadResidencial the unidadResidencial to set
      */
-    public void setUnidadResidencial(UnidadResidencialDTO unidadResidencial) {
+    public void setUnidadResidencial(String unidadResidencial) {
         this.unidadResidencial = unidadResidencial;
     }
 
     /**
      * @return the alarmas
      */
-    public List<AlarmaDTO> getAlarmas() {
+    public List<String> getAlarmas() {
         return alarmas;
     }
 
     /**
      * @param alarmas the alarmas to set
      */
-    public void setAlarmas(List<AlarmaDTO> alarmas) {
+    public void setAlarmas(List<String> alarmas) {
         this.alarmas = alarmas;
     }
-    public void addtAlarmas(AlarmaDTO alarma) {
+    public void addtAlarmas(String alarma) {
         this.alarmas.add(alarma);
     }
     

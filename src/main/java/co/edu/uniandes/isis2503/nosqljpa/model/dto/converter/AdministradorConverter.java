@@ -36,8 +36,6 @@ import java.util.List;
 public class AdministradorConverter implements IAdministradorConverter {
 
     public static IAdministradorConverter CONVERTER = new AdministradorConverter();
-    
-    public AlarmaConverter alarmaconv;
 
     public AdministradorConverter() {
     }
@@ -47,8 +45,8 @@ public class AdministradorConverter implements IAdministradorConverter {
         AdministradorDTO dto = new AdministradorDTO();
         dto.setId(entity.getId());
         dto.setNombre(entity.getNombre());
-        dto.setUnidadResidencial(entity.getUnidadResidencial().entityToDTO());
-        dto.setAlarmas( alarmaconv.listEntitiesToListDTOs(entity.getAlarmas()));
+        dto.setUnidadResidencial(entity.getUnidadResidencial());
+        dto.setAlarmas(entity.getAlarmas());
         return dto;
     }
 
@@ -57,8 +55,8 @@ public class AdministradorConverter implements IAdministradorConverter {
         AdministradorEntity entity = new AdministradorEntity();
         entity.setId(dto.getId());
         entity.setNombre(dto.getNombre());
-        entity.setunidadResidencial(dto.getUnidadResidencial().DTOToentity());
-        entity.setAlarmas(alarmaconv.listDTOsToListEntities(dto.getAlarmas()));
+        entity.setunidadResidencial(dto.getUnidadResidencial());
+        entity.setAlarmas(dto.getAlarmas());
         return entity;
     }
 

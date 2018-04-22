@@ -169,6 +169,4 @@ public class AlarmaEntity implements Serializable
         this.propietario = propietario;
     }
     
-    
-    
 }

@@ -80,7 +80,7 @@ public class AdministradorService {
     @Path("{id}/alarmas")
     public AlarmaDTO addRoom(@PathParam("id") String id, AlarmaDTO dto) {
         AdministradorDTO floor = administradorLogic.find(id);
-        floor.addtAlarmas(dto);
+        floor.addtAlarmas(dto.getNombre());
         AlarmaDTO resul= alarmaLogic.add(dto);
         resul.setAdmin(floor.getId());
         administradorLogic.update(floor);
@@ -103,7 +103,7 @@ public class AdministradorService {
 
     @GET
     @Path("{id}/alarmas")
-    public List<AlarmaDTO> addRoom(@PathParam("id") String id) {
+    public List<String> addRoom(@PathParam("id") String id) {
         AdministradorDTO admin = administradorLogic.find(id);
         
         return (admin.getAlarmas());
