@@ -91,7 +91,8 @@ void processData() {
 
       if(conectMQTT) {
         if(clientMQTT.subscribe(TOPIC_SUBSCRIBE)) {
-           Serial.println("Subscribe OK");
+           //Serial.println("Subscribe OK");
+           clientMQTT.setCallback(callback);
         }
       }
     }
