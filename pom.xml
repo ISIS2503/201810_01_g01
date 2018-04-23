@@ -37,6 +37,11 @@
             <type>jar</type>
         </dependency>
         <dependency>
+            <groupId>org.eclipse.paho.client.mqttv3-1.2.0</groupId>
+            <artifactId>org.eclipse.paho.client.mqttv3</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
             <version>7.0</version>

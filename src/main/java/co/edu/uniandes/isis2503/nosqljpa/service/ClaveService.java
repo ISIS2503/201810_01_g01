@@ -41,6 +41,10 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 /**
  *
@@ -52,7 +56,10 @@ public class ClaveService
 {
     private final IClaveLogic claveLogic;
     
-     private final IClaveConverter converClave;
+    private final IClaveConverter converClave;
+    
+    private final String topic = "home";
+    private final String broker = "tcp://172.24.42.95:8083";
      
       public ClaveService() {
         this.claveLogic= new ClaveLogic();
@@ -60,25 +67,40 @@ public class ClaveService
         //this.roomLogic = new RoomLogic(); IRIA UNIADAD RESIDENCIAL
     }
       
-     @GET
+    @GET
     public List<ClaveDTO> all() {
         return claveLogic.all();
     }
       
-       @POST
-    public ClaveDTO add(ClaveDTO dto) {
+    @POST
+    public ClaveDTO add(ClaveDTO dto)
+    {    
+        //MQTT
+        String content = "c;"+dto.getId()+";"+dto.getClave();
+        enviarMQTT(content);
+        
         return claveLogic.add(dto);
     }
     
     @PUT
     @Path("/{id}")
-    public ClaveDTO update(@PathParam("id") String id, ClaveDTO dto) {
+    public ClaveDTO update(@PathParam("id") String id, ClaveDTO dto) 
+    {   
+        //MQTT
+        String content = "u;"+id+";"+dto.getClave();
+        enviarMQTT(content);
+       
         return claveLogic.update(dto);
     }
     
      @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") String id) {
+        //MQTT
+        String content = "d;"+id+"; ";
+        enviarMQTT(content);
+        
+        //BD
         try {
             claveLogic.delete(id);
             return Response.status(200).header("Access-Control-Allow-Origin", "*").entity("Sucessful: Administrador was deleted").build();
@@ -92,6 +114,12 @@ public class ClaveService
      @DELETE
   
     public Response deleteAll() {
+        
+        //MQTT
+        String content = "dd; ; ";
+        enviarMQTT(content);
+        
+        //BD
         try {
             List<ClaveDTO> claves = claveLogic.all();
             for(int i=0;i<claves.size();i++)
@@ -107,5 +135,39 @@ public class ClaveService
         }
     }
 
+    private void enviarMQTT(String content)
+    {
+        try
+        {
+        MqttClient client = new MqttClient(broker, MqttClient.generateClientId());
+        MqttConnectOptions connOpts = new MqttConnectOptions();
+        connOpts.setCleanSession(true);
+             
+        System.out.println("Connecting to broker: " + broker);
+             
+        client.connect(connOpts);
+             
+        System.out.println("Connected");
+        System.out.println("Publishing message: "+content);
+             
+        MqttMessage message = new MqttMessage(content.getBytes());
+        message.setQos(2);
+        client.publish(topic, message);
+             
+        System.out.println("Message published");
+             
+        client.disconnect();
+             
+        System.out.println("Disconnected");
+        System.exit(0);
+        } catch(MqttException me) {
+             System.out.println("reason "+me.getReasonCode());
+             System.out.println("msg "+me.getMessage());
+             System.out.println("loc "+me.getLocalizedMessage());
+             System.out.println("cause "+me.getCause());
+             System.out.println("excep "+me);
+             me.printStackTrace();
+        }
+    }
     
 }
