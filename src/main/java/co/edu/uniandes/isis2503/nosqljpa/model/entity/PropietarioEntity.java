@@ -25,12 +25,15 @@ package co.edu.uniandes.isis2503.nosqljpa.model.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -50,16 +53,20 @@ public class PropietarioEntity implements Serializable
     
     private List<String> alarmas;
     
+ 
+    private String fechaingreso;
+    
     public PropietarioEntity() {
         this.residencias = new ArrayList();
         this.alarmas = new ArrayList();
     }
 
-    public PropietarioEntity(String id, String nombre,List<String> residencias, List<String> alarmas) {
+    public PropietarioEntity(String id, String nombre,List<String> residencias, List<String> alarmas, String fechaIngreso) {
         this.id = id;
         this.nombre = nombre;
         this.residencias = residencias;
         this.alarmas = alarmas;
+        this.fechaingreso=fechaIngreso;
     }
 
     /**
@@ -116,6 +123,20 @@ public class PropietarioEntity implements Serializable
      */
     public void setAlarmas(List<String> alarmas) {
         this.alarmas = alarmas;
+    }
+
+    /**
+     * @return the fechaingreso
+     */
+    public String getFechaingreso() {
+        return fechaingreso;
+    }
+
+    /**
+     * @param fechaingreso the fechaingreso to set
+     */
+    public void setFechaingreso(String fechaingreso) {
+        this.fechaingreso = fechaingreso;
     }
 
 }

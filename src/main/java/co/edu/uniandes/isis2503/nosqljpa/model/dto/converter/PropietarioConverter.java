@@ -47,6 +47,7 @@ public class PropietarioConverter implements IPropietarioConverter {
         dto.setNombre(entity.getNombre());
         dto.setResidencias(entity.getResidencias());
         dto.setAlarmas(entity.getAlarmas());
+        dto.setFechaingreso(entity.getFechaingreso());
         return dto;
     }
 
@@ -57,6 +58,7 @@ public class PropietarioConverter implements IPropietarioConverter {
         entity.setNombre(dto.getNombre());
         entity.setResidencias(dto.getResidencias());
         entity.setAlarmas(dto.getAlarmas());
+        entity.setFechaingreso(dto.getFechaingreso());
         return entity;
     }
 

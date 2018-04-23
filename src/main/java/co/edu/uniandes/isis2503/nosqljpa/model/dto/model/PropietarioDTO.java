@@ -25,6 +25,7 @@ package co.edu.uniandes.isis2503.nosqljpa.model.dto.model;
 
 import co.edu.uniandes.isis2503.nosqljpa.model.entity.AlarmaEntity;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -45,16 +46,20 @@ public class PropietarioDTO
     private List<String> alarmas;
     
     
+    private String fechaingreso;
+    
+    
     public PropietarioDTO() {
         this.residencias = new ArrayList();
         this.alarmas = new ArrayList();
     }
 
-    public PropietarioDTO(String id, String nombre,List<String> residencias, List<String> alarmas) {
+    public PropietarioDTO(String id, String nombre,List<String> residencias, List<String> alarmas, String fechaibgreso) {
         this.id = id;
         this.nombre = nombre;
         this.residencias = residencias;
         this.alarmas = alarmas;
+        this.fechaingreso = fechaibgreso;
     }
     
     public void addResidencia(String id) {
@@ -121,6 +126,20 @@ public class PropietarioDTO
     }
     public void addtAlarmas(String alarma) {
         this.alarmas.add(alarma);
+    }
+
+    /**
+     * @return the fechaingreso
+     */
+    public String getFechaingreso() {
+        return fechaingreso;
+    }
+
+    /**
+     * @param fechaingreso the fechaingreso to set
+     */
+    public void setFechaingreso(String fechaingreso) {
+        this.fechaingreso = fechaingreso;
     }
     
      

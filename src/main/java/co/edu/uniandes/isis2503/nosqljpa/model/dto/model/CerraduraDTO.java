@@ -34,15 +34,17 @@ public class CerraduraDTO {
     private String id;
     private String tipo;
     private String residencia;
+    private String fechaingreso;
     
     public CerraduraDTO() {
        
     }
 
-    public CerraduraDTO(String id, String tipo, String residencia) {
+    public CerraduraDTO(String id, String tipo, String residencia, String fechaingreso) {
         this.id = id;
         this.tipo = tipo;
         this.residencia = residencia;
+        this.fechaingreso = fechaingreso;
     }
 
     /**
@@ -85,6 +87,20 @@ public class CerraduraDTO {
      */
     public void setResidencia(String residencia) {
         this.residencia = residencia;
+    }
+
+    /**
+     * @return the fechaingreso
+     */
+    public String getFechaingreso() {
+        return fechaingreso;
+    }
+
+    /**
+     * @param fechaingreso the fechaingreso to set
+     */
+    public void setFechaingreso(String fechaingreso) {
+        this.fechaingreso = fechaingreso;
     }
     
 }
