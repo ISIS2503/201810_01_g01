@@ -47,6 +47,7 @@ public class CerraduraConverter implements ICerraduraConverter {
         dto.setTipo(entity.getTipo());
         dto.setResidencia(entity.getResidencia());
         dto.setFechaingreso(entity.getFechaingreso());
+        dto.setEstado(entity.getEstado());
         return dto;
     }
 
@@ -57,6 +58,7 @@ public class CerraduraConverter implements ICerraduraConverter {
         entity.setTipo(dto.getTipo());
         entity.setResidencia(dto.getResidencia());
         entity.setFechaingreso(dto.getFechaingreso());
+        entity.setEstado(dto.getEstado());
         return entity;
     }
 

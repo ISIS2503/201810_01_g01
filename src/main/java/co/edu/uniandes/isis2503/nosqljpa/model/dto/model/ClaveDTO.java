@@ -23,6 +23,7 @@
  */
 package co.edu.uniandes.isis2503.nosqljpa.model.dto.model;
 
+import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -35,13 +36,17 @@ public class ClaveDTO
     private String id;
     private String peticion;
     private int clave;
+    private Date fechaInicial;
+    private Date fechaFinal;
     
     
 
-    public ClaveDTO(String id, String peticion, int clave) {
+    public ClaveDTO(String id, String peticion, int clave, Date fechaIngreso, Date fechaFinal) {
         this.id = id;
         this.peticion = peticion;
         this.clave= clave;
+        this.fechaInicial= fechaIngreso;
+        this.fechaFinal= fechaFinal;
         
         
 
@@ -92,6 +97,34 @@ public class ClaveDTO
      */
     public void setClave(int clave) {
         this.clave = clave;
+    }
+
+    /**
+     * @return the fechaIngreso
+     */
+    public Date getFechaIngreso() {
+        return fechaInicial;
+    }
+
+    /**
+     * @param fechaIngreso the fechaIngreso to set
+     */
+    public void setFechaIngreso(Date fechaIngreso) {
+        this.fechaInicial = fechaIngreso;
+    }
+
+    /**
+     * @return the fechaFinal
+     */
+    public Date getFechaFinal() {
+        return fechaFinal;
+    }
+
+    /**
+     * @param fechaFinal the fechaFinal to set
+     */
+    public void setFechaFinal(Date fechaFinal) {
+        this.fechaFinal = fechaFinal;
     }
     
 }

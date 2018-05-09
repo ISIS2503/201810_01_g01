@@ -44,7 +44,7 @@ import javax.ws.rs.core.Response;
  * @author m.sicard10
  */
 @Path("/hub")
-@Secured({Role.administrador, Role.propietario, Role.yale})
+//@Secured({Role.administrador, Role.propietario, Role.yale})
 @Produces(MediaType.APPLICATION_JSON)
 public class HubService 
 {

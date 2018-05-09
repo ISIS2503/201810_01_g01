@@ -21,24 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package co.edu.uniandes.isis2503.nosqljpa.interfaces;
+package co.edu.uniandes.isis2503.nosqljpa.persistence;
 
-
-import co.edu.uniandes.isis2503.nosqljpa.model.dto.model.ClaveDTO;
-import java.util.List;
+import co.edu.uniandes.isis2503.nosqljpa.model.entity.UsuarioEntity;
 
 /**
  *
- * @author m.sicard10
+ * @author af.leon
  */
-public interface IClaveLogic 
-{
-  public ClaveDTO add(ClaveDTO dto);
-    public ClaveDTO update(ClaveDTO dto);
-    public ClaveDTO find(String id);
-    public ClaveDTO findClave(int id);
-    public List<ClaveDTO> all();
-    public Boolean delete(String id);   
+public class UsuarioPersistence extends Persistencer<UsuarioEntity, String>{
     
-    
+    public UsuarioPersistence(){
+        this.entityClass = UsuarioEntity.class;
+    }
 }

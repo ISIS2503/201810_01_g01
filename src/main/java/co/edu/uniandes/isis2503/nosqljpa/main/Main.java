@@ -23,19 +23,29 @@
  */
 package co.edu.uniandes.isis2503.nosqljpa.main;
 
+import co.edu.uniandes.isis2503.nosqljpa.service.ClaveService;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 /**
  *
  * @author Luis Felipe Mendivelso Osorio <lf.mendivelso10@uniandes.edu.co>
  */
-public class Main {
+public class Main implements MqttCallback {
     private static final Logger LOG = Logger.getLogger(Main.class.getName());
+   static private ClaveService a;
 
     public static void main(String agrs[]) {
+   
+            
+        
         try {
             String webappDirLocation = "src/main/webapp/";
             String webPort = System.getenv("PORT");
@@ -51,11 +61,30 @@ public class Main {
             server.setHandler(root);
             server.start();
             server.join();
+            
+           
+            
+            
         } catch (InterruptedException ex) {
             LOG.log(Level.WARNING, ex.getMessage());
         } catch (Exception ex) {
             LOG.log(Level.WARNING, ex.getMessage());
         }
 
+    }
+
+    @Override
+    public void connectionLost(Throwable thrwbl) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void messageArrived(String string, MqttMessage mm) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void deliveryComplete(IMqttDeliveryToken imdt) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

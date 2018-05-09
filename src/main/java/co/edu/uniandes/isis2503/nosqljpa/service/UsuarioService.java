@@ -23,13 +23,12 @@
  */
 package co.edu.uniandes.isis2503.nosqljpa.service;
 
-import co.edu.uniandes.isis2503.nosqljpa.auth.AuthorizationFilter.Role;
-import co.edu.uniandes.isis2503.nosqljpa.auth.Secured;
-import co.edu.uniandes.isis2503.nosqljpa.interfaces.ICerraduraLogic;
-import co.edu.uniandes.isis2503.nosqljpa.interfaces.IResidenciaLogic;
-import co.edu.uniandes.isis2503.nosqljpa.logic.CerraduraLogic;
-import co.edu.uniandes.isis2503.nosqljpa.logic.ResidenciaLogic;
-import co.edu.uniandes.isis2503.nosqljpa.model.dto.model.CerraduraDTO;
+
+import co.edu.uniandes.isis2503.nosqljpa.interfaces.IUsuarioLogic;
+
+import co.edu.uniandes.isis2503.nosqljpa.logic.UsuarioLogic;
+
+import co.edu.uniandes.isis2503.nosqljpa.model.dto.model.UsuarioDTO;
 import com.sun.istack.logging.Logger;
 import java.util.List;
 import java.util.logging.Level;
@@ -45,51 +44,51 @@ import javax.ws.rs.core.Response;
 
 /**
  *
- * @author m.sicard10
+ * @author af.leon
  */
-@Path("/cerradura")
-//@Secured({Role.administrador, Role.propietario, Role.yale})
+@Path("/usuario")
 @Produces(MediaType.APPLICATION_JSON)
-public class CerraduraService {
-   
-    private final ICerraduraLogic cerraduraLogic;
-    private final IResidenciaLogic residenciaLogic;
+public class UsuarioService 
+{
+    private final IUsuarioLogic usuarioLogic;
+    
 
-    public CerraduraService() {
-        this.cerraduraLogic = new CerraduraLogic();
-        this.residenciaLogic = new ResidenciaLogic();
+    public UsuarioService() {
+        this.usuarioLogic = new UsuarioLogic();
+        
     }
 
     @POST
-    public CerraduraDTO add(CerraduraDTO dto) {
-        return cerraduraLogic.add(dto);
+    public UsuarioDTO add(UsuarioDTO dto) {
+        return usuarioLogic.add(dto);
     }
 
     @PUT
-    public CerraduraDTO update(CerraduraDTO dto) {
-        return cerraduraLogic.update(dto);
+    public UsuarioDTO update(UsuarioDTO dto) {
+        return usuarioLogic.update(dto);
     }
 
     @GET
     @Path("/{id}")
-    public CerraduraDTO find(@PathParam("id") String id) {
-        return cerraduraLogic.find(id);
+    public UsuarioDTO find(@PathParam("id") String id) {
+        return usuarioLogic.find(id);
     }
 
     @GET
-    public List<CerraduraDTO> all() {
-        return cerraduraLogic.all();
+    public List<UsuarioDTO> all() {
+        return usuarioLogic.all();
     }
 
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") String id) {
         try {
-            cerraduraLogic.delete(id);
+            usuarioLogic.delete(id);
             return Response.status(200).header("Access-Control-Allow-Origin", "*").entity("Sucessful: Cerradura was deleted").build();
         } catch (Exception e) {
             Logger.getLogger(AdministradorService.class).log(Level.WARNING, e.getMessage());
             return Response.status(500).header("Access-Control-Allow-Origin", "*").entity("We found errors in your query, please contact the Web Admin.").build();
         }
     }
+    
 }

@@ -24,95 +24,118 @@
 package co.edu.uniandes.isis2503.nosqljpa.model.entity;
 
 import java.io.Serializable;
-
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
  *
- * @author jd.carrillor
+ * @author af.leon
  */
-
 @Entity
-@Table(name = "HUB")
-public class HubEntity implements Serializable
-{
-     @Id
+@Table(name = "USUARIO")
+public class UsuarioEntity implements Serializable {
+    
+    @Id
     private String id;
     
-    private int healthChecksPermitidos;
+    private String nombre;
+   
+    private String correo;
     
-    private String cerradura;
+    private int telefono;
     
-    private String estado;
+    private String user1;
     
-    
-    public HubEntity() {
-       
+    private List<String> claves;
+   
+    public UsuarioEntity() {
+         this.claves  = new ArrayList();
     }
 
-    public HubEntity(String id, int healthChecksPermitidos, String cerradura, String estado) {
+    public UsuarioEntity(String id, String nombre, String correo, List<String> claves, int telefono, String user ) {
         this.id = id;
-        this.cerradura = cerradura;
-        this.healthChecksPermitidos = healthChecksPermitidos;
-        this.estado = estado;
+        this.nombre = nombre;
+        this.correo = correo;
+        this.telefono = telefono;
+        this.user1=user;
+        this.claves = claves;
+        
     }
 
-    /**
-     * @return the id
-     */
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
     public String getId() {
         return id;
     }
 
-    /**
-     * @param id the id to set
-     */
     public void setId(String id) {
         this.id = id;
     }
 
+   
     /**
-     * @return the healthChecksPermitidos
+     * @return the correo
      */
-    public int getHealthChecksPermitidos() {
-        return healthChecksPermitidos;
+    public String getCorreo() {
+        return correo;
     }
 
     /**
-     * @param healthChecksPermitidos the healthChecksPermitidos to set
+     * @param correo the correo to set
      */
-    public void setHealthChecksPermitidos(int healthChecksPermitidos) {
-        this.healthChecksPermitidos = healthChecksPermitidos;
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
 
     /**
-     * @return the cerradura
+     * @return the telefono
      */
-    public String getCerradura() {
-        return cerradura;
+    public int getTelefono() {
+        return telefono;
     }
 
     /**
-     * @param cerradura the cerradura to set
+     * @param telefono the telefono to set
      */
-    public void setCerradura(String cerradura) {
-        this.cerradura = cerradura;
+    public void setTelefono(int telefono) {
+        this.telefono = telefono;
     }
 
     /**
-     * @return the estado
+     * @return the user
      */
-    public String getEstado() {
-        return estado;
+    public String getUser() {
+        return user1;
     }
 
     /**
-     * @param estado the estado to set
+     * @param user the user to set
      */
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setUser(String user) {
+        this.user1 = user;
+    }
+
+    /**
+     * @return the claves
+     */
+    public List<String> getClaves() {
+        return claves;
+    }
+
+    /**
+     * @param claves the claves to set
+     */
+    public void setClaves(List<String> claves) {
+        this.claves = claves;
     }
     
 }

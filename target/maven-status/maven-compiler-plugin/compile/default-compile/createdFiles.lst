@@ -1,3 +1,4 @@
+co\edu\uniandes\isis2503\nosqljpa\persistence\UsuarioPersistence.class
 co\edu\uniandes\isis2503\nosqljpa\interfaces\IResidenciaConverter.class
 co\edu\uniandes\isis2503\nosqljpa\model\dto\converter\UnidadResidencialConverter.class
 co\edu\uniandes\isis2503\nosqljpa\logic\CerraduraLogic.class
@@ -8,6 +9,8 @@ co\edu\uniandes\isis2503\nosqljpa\persistence\Persistencer.class
 co\edu\uniandes\isis2503\nosqljpa\service\CerraduraService.class
 co\edu\uniandes\isis2503\nosqljpa\service\CentralYaleService.class
 co\edu\uniandes\isis2503\nosqljpa\auth\AuthenticationFilter$1.class
+co\edu\uniandes\isis2503\nosqljpa\service\UsuarioService.class
+co\edu\uniandes\isis2503\nosqljpa\logic\UsuarioLogic.class
 co\edu\uniandes\isis2503\nosqljpa\model\entity\AdministradorEntity.class
 co\edu\uniandes\isis2503\nosqljpa\interfaces\IHubLogic.class
 co\edu\uniandes\isis2503\nosqljpa\model\dto\converter\AdministradorConverter.class
@@ -17,6 +20,7 @@ co\edu\uniandes\isis2503\nosqljpa\model\dto\model\UnidadResidencialDTO.class
 co\edu\uniandes\isis2503\nosqljpa\model\entity\CerraduraEntity.class
 co\edu\uniandes\isis2503\nosqljpa\persistence\ResidenciaPersistence.class
 co\edu\uniandes\isis2503\nosqljpa\auth\CORSFilter.class
+co\edu\uniandes\isis2503\nosqljpa\model\dto\model\UsuarioDTO.class
 co\edu\uniandes\isis2503\nosqljpa\model\dto\converter\ResidenciaConverter.class
 co\edu\uniandes\isis2503\nosqljpa\interfaces\ICerraduraLogic.class
 co\edu\uniandes\isis2503\nosqljpa\interfaces\IHubConverter.class
@@ -51,7 +55,11 @@ co\edu\uniandes\isis2503\nosqljpa\interfaces\IAdministradorLogic.class
 co\edu\uniandes\isis2503\nosqljpa\model\entity\ClaveEntity.class
 co\edu\uniandes\isis2503\nosqljpa\interfaces\ICentralYaleLogic.class
 co\edu\uniandes\isis2503\nosqljpa\service\UnidadResidencialService.class
+co\edu\uniandes\isis2503\nosqljpa\interfaces\IUsuarioConverter.class
 co\edu\uniandes\isis2503\nosqljpa\logic\PropietarioLogic.class
+co\edu\uniandes\isis2503\nosqljpa\interfaces\IUsuarioLogic.class
+co\edu\uniandes\isis2503\nosqljpa\model\dto\converter\UsuarioConverter.class
+co\edu\uniandes\isis2503\nosqljpa\model\entity\UsuarioEntity.class
 co\edu\uniandes\isis2503\nosqljpa\service\PropietarioService.class
 co\edu\uniandes\isis2503\nosqljpa\interfaces\IPropietarioConverter.class
 co\edu\uniandes\isis2503\nosqljpa\model\dto\model\AlarmaDTO.class

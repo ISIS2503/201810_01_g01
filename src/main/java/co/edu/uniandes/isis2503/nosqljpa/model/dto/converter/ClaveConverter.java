@@ -50,6 +50,8 @@ public class ClaveConverter implements IClaveConverter
         dto.setId(entity.getId());
         dto.setPeticion(entity.getPeticion());
         dto.setClave(entity.getClave());
+        dto.setFechaIngreso(entity.getFechaIngreso());
+        dto.setFechaFinal(entity.getFechaFinal());
         
         return dto;
     }
@@ -60,6 +62,8 @@ public class ClaveConverter implements IClaveConverter
         entity.setId(dto.getId());
         entity.setPeticion(dto.getPeticion());
         entity.setClave(dto.getClave());
+        entity.setFechaIngreso(dto.getFechaIngreso());
+        entity.setFechaFinal(dto.getFechaFinal());
         
         return entity;
     }

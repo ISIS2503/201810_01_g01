@@ -23,10 +23,13 @@
  */
 package co.edu.uniandes.isis2503.nosqljpa.model.entity;
 
+import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -34,7 +37,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "ADMINISTRADOR")
-public class ClaveEntity
+public class ClaveEntity implements Serializable 
 {
      
     @Id
@@ -43,13 +46,21 @@ public class ClaveEntity
     private String peticion;
    
     private int clave;
+    
+    
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date fechaInicial;
+     @Temporal(javax.persistence.TemporalType.DATE)
+    private Date fechaFinal;
 
     
-    public ClaveEntity(String id, String peticion, int clave)
+    public ClaveEntity(String id, String peticion, int clave, Date fechaIngreso, Date fechaFinal)
     {
         this.id=id;
         this.peticion=peticion;
         this.clave=clave;
+        this.fechaInicial=fechaIngreso;
+        this.fechaFinal=fechaFinal;
     }
     
     public ClaveEntity()
@@ -97,6 +108,34 @@ public class ClaveEntity
      */
     public void setClave(int clave) {
         this.clave = clave;
+    }
+
+    /**
+     * @return the fechaIngreso
+     */
+    public Date getFechaIngreso() {
+        return fechaInicial;
+    }
+
+    /**
+     * @param fechaIngreso the fechaIngreso to set
+     */
+    public void setFechaIngreso(Date fechaIngreso) {
+        this.fechaInicial = fechaIngreso;
+    }
+
+    /**
+     * @return the fechaFinal
+     */
+    public Date getFechaFinal() {
+        return fechaFinal;
+    }
+
+    /**
+     * @param fechaFinal the fechaFinal to set
+     */
+    public void setFechaFinal(Date fechaFinal) {
+        this.fechaFinal = fechaFinal;
     }
     
     

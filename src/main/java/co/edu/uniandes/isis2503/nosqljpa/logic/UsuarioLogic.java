@@ -23,59 +23,53 @@
  */
 package co.edu.uniandes.isis2503.nosqljpa.logic;
 
-import co.edu.uniandes.isis2503.nosqljpa.interfaces.IClaveLogic;
-import static co.edu.uniandes.isis2503.nosqljpa.model.dto.converter.ClaveConverter.CONVERTER;
-import co.edu.uniandes.isis2503.nosqljpa.model.dto.model.ClaveDTO;
-import co.edu.uniandes.isis2503.nosqljpa.persistence.ClavePersistence;
-
+import co.edu.uniandes.isis2503.nosqljpa.interfaces.IUsuarioLogic;
+import static co.edu.uniandes.isis2503.nosqljpa.model.dto.converter.UsuarioConverter.CONVERTER;
+import co.edu.uniandes.isis2503.nosqljpa.model.dto.model.UsuarioDTO;
+import co.edu.uniandes.isis2503.nosqljpa.persistence.UsuarioPersistence;
 import java.util.List;
 import java.util.UUID;
 
 /**
  *
- * @author m.sicard10
+ * @author af.leon
  */
-public class ClaveLogic implements IClaveLogic  
-{
-    
-     private final ClavePersistence persistence;
+public class UsuarioLogic implements IUsuarioLogic {
 
-    public ClaveLogic() {
-        this.persistence = new ClavePersistence();
+   private final UsuarioPersistence persistence;
+
+    public UsuarioLogic() {
+        this.persistence = new UsuarioPersistence();
     }
 
     @Override
-    public ClaveDTO add(ClaveDTO dto) {
+    public UsuarioDTO add(UsuarioDTO dto) {
          if(dto.getId()==null){
             dto.setId(UUID.randomUUID().toString());
          }
-        ClaveDTO result = CONVERTER.entityToDto(persistence.add(CONVERTER.dtoToEntity(dto)));
+        UsuarioDTO result = CONVERTER.entityToDto(persistence.add(CONVERTER.dtoToEntity(dto)));
         return result;
     }
 
     @Override
-    public ClaveDTO update(ClaveDTO dto) {
-        ClaveDTO result = CONVERTER.entityToDto(persistence.update(CONVERTER.dtoToEntity(dto)));
+    public UsuarioDTO update(UsuarioDTO dto) {
+        UsuarioDTO result = CONVERTER.entityToDto(persistence.update(CONVERTER.dtoToEntity(dto)));
         return result;
     }
 
     @Override
-    public ClaveDTO find(String id) {
+    public UsuarioDTO find(String id) {
         return CONVERTER.entityToDto(persistence.find(id));
-    }
-     @Override
-    public ClaveDTO findClave(int id)
-    {
-       return CONVERTER.entityToDto(persistence.findClave(id));  
     }
     
     @Override
-    public List<ClaveDTO> all() {
+    public List<UsuarioDTO> all() {
         return CONVERTER.listEntitiesToListDTOs(persistence.all());
     }
 
     @Override
     public Boolean delete(String id) {
-          return persistence.delete(id);
+        return persistence.delete(id);
     }
+    
 }

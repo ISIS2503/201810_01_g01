@@ -29,6 +29,7 @@ import co.edu.uniandes.isis2503.nosqljpa.logic.ClaveLogic;
 import co.edu.uniandes.isis2503.nosqljpa.model.dto.converter.ClaveConverter;
 import co.edu.uniandes.isis2503.nosqljpa.model.dto.model.ClaveDTO;
 import com.sun.istack.logging.Logger;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import javax.ws.rs.DELETE;
@@ -41,10 +42,13 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.hibernate.ejb.criteria.expression.function.CurrentTimestampFunction;
 
 /**
  *
@@ -60,6 +64,8 @@ public class ClaveService
     
     private final String topic = "home";
     private final String broker = "tcp://172.24.42.95:8083";
+    
+    MqttClient client;
      
       public ClaveService() {
         this.claveLogic= new ClaveLogic();
@@ -71,6 +77,96 @@ public class ClaveService
     public List<ClaveDTO> all() {
         return claveLogic.all();
     }
+    
+//    @GET
+//    @Path("/validar/{id}")
+//    public String validarHorario(@PathParam("id") String mensaje)
+//    {
+//         
+//            String[] msg = mensaje.split(";");
+//            String clave = msg[1];
+//          ClaveDTO claveDTO= claveLogic.find(clave);
+//          Date fechaInicial =   claveDTO.getFechaIngreso();
+//          Date fechaFinal =   claveDTO.getFechaFinal();
+//          Date fechaActual = new Date();
+//          if (fechaActual.getHours()>fechaInicial.getHours()&&fechaActual.getHours()<fechaFinal.getHours())
+//          {
+//             //MQTT
+//            String content = "A";
+//            enviarMQTT(content);
+//          }
+//          else if(fechaActual.getHours()==fechaInicial.getHours())
+//          {
+//              if(fechaActual.getMinutes()>fechaInicial.getMinutes())
+//              {
+//                   //MQTT
+//                String content = "A";
+//                enviarMQTT(content);
+//              }
+//              else if(fechaActual.getMinutes()==fechaInicial.getMinutes())
+//              {
+//                   //MQTT
+//                String content = "A";
+//                enviarMQTT(content);
+//              }
+//              else
+//              {
+//                   //MQTT
+//                String content = "R";
+//                enviarMQTT(content);
+//              }
+//          }
+//          else if(fechaActual.getHours()==fechaFinal.getHours())
+//          {
+//                 if(fechaActual.getMinutes()<fechaFinal.getMinutes())
+//              {
+//                   //MQTT
+//                String content = "A";
+//                enviarMQTT(content);
+//              }
+//              else if(fechaActual.getMinutes()==fechaFinal.getMinutes())
+//              {
+//                   //MQTT
+//                String content = "A";
+//                enviarMQTT(content);
+//              }
+//              else
+//              {
+//                   //MQTT
+//                String content = "R";
+//                enviarMQTT(content);
+//              }
+//          }
+//          else
+//          {
+//                //MQTT
+//                String content = "R";
+//                enviarMQTT(content);
+//          }
+//         
+//        return "se valido el horario";
+//    }
+    
+   
+    
+    @GET
+    @Path("/{id}")
+    public ClaveDTO find(@PathParam("id") String id)
+    {
+        
+      
+        return claveLogic.find(id);
+//        ClaveDTO dto=claveLogic.find(id);
+//        String content = "P;"+dto.getId()+";"+dto.getClave();
+//        enviarMQTT(content);
+//        return claveLogic.find(id);
+        
+        
+    }
+    
+    
+    
+    
       
     @POST
     public ClaveDTO add(ClaveDTO dto)
@@ -170,4 +266,113 @@ public class ClaveService
         }
     }
     
+    
+
+//    @Override
+//    public void connectionLost(Throwable thrwbl) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
+//    
+//    public void correr() 
+//{	
+//	try 
+//	{
+//		//CONECION MQTT
+//    	client = new MqttClient("tcp://172.24.42.95:8083", MqttClient.generateClientId());
+//    	client.setCallback(this);
+//        client.connect();
+//        client.subscribe("alarma");
+//            System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+//    } 
+//    catch (MqttException e) {
+//         System.out.println("----------------------------------------------------------------------------------------------------------------");
+//        e.printStackTrace();
+//       
+//    }
+//}
+//
+//    @Override
+//    public void messageArrived(String topic , MqttMessage message) throws Exception 
+//    {
+//            String mensa = message.toString();
+//            String[] msg = mensa.split(";");
+//            String clave = msg[1];
+//          ClaveDTO claveDTO= claveLogic.find(clave);
+//          Date fechaInicial =   claveDTO.getFechaIngreso();
+//          Date fechaFinal =   claveDTO.getFechaFinal();
+//          Date fechaActual = new Date();
+//          if (fechaActual.getHours()>fechaInicial.getHours()&&fechaActual.getHours()<fechaFinal.getHours())
+//          {
+//             //MQTT
+//            String content = "A";
+//            enviarMQTT(content);
+//          }
+//          else if(fechaActual.getHours()==fechaInicial.getHours())
+//          {
+//              if(fechaActual.getMinutes()>fechaInicial.getMinutes())
+//              {
+//                   //MQTT
+//                String content = "A";
+//                enviarMQTT(content);
+//              }
+//              else if(fechaActual.getMinutes()==fechaInicial.getMinutes())
+//              {
+//                   //MQTT
+//                String content = "A";
+//                enviarMQTT(content);
+//              }
+//              else
+//              {
+//                   //MQTT
+//                String content = "R";
+//                enviarMQTT(content);
+//              }
+//          }
+//          else if(fechaActual.getHours()==fechaFinal.getHours())
+//          {
+//                 if(fechaActual.getMinutes()<fechaFinal.getMinutes())
+//              {
+//                   //MQTT
+//                String content = "A";
+//                enviarMQTT(content);
+//              }
+//              else if(fechaActual.getMinutes()==fechaFinal.getMinutes())
+//              {
+//                   //MQTT
+//                String content = "A";
+//                enviarMQTT(content);
+//              }
+//              else
+//              {
+//                   //MQTT
+//                String content = "R";
+//                enviarMQTT(content);
+//              }
+//          }
+//          else
+//          {
+//                //MQTT
+//                String content = "R";
+//                enviarMQTT(content);
+//          }
+//         
+//          
+//           
+//            
+//            
+//        
+//        
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
+//     
+//   
+//
+//    @Override
+//    public void deliveryComplete(IMqttDeliveryToken imdt) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
+//    
 }
+
+
+

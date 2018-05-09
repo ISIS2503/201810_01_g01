@@ -44,6 +44,8 @@ public class CerraduraEntity implements Serializable {
     private String residencia;
     
     private String fechaingreso;
+    
+    private String estado;
    
     public CerraduraEntity() {
  
@@ -54,6 +56,7 @@ public class CerraduraEntity implements Serializable {
         this.tipo = tipo;
         this.residencia = residencia;
         this.fechaingreso = fechaingreso;
+        this. estado = estado;
     }
 
     public String getTipo() {
@@ -98,6 +101,20 @@ public class CerraduraEntity implements Serializable {
      */
     public void setFechaingreso(String fechaingreso) {
         this.fechaingreso = fechaingreso;
+    }
+
+    /**
+     * @return the estado
+     */
+    public String getEstado() {
+        return estado;
+    }
+
+    /**
+     * @param estado the estado to set
+     */
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
     
 }

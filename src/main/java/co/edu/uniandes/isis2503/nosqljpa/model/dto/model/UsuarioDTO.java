@@ -23,34 +23,41 @@
  */
 package co.edu.uniandes.isis2503.nosqljpa.model.dto.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author jd.carrillor
+ * @author af.leon
  */
 @XmlRootElement
-public class HubDTO
-{
+public class UsuarioDTO {
     private String id;
     
-     private String cerradura;
-
-    private int healthChecksPermitidos;
+    private String nombre;
+   
+    private String correo;
     
-    private String estado;
+    private int telefono;
     
-    public HubDTO()
-    {
-        
+    private String user1;
+    
+    private List<String> claves;
+    
+    public UsuarioDTO() {
+      this.claves = new ArrayList();
     }
-    
-    public HubDTO(String id, int healthChecksPermitidos, String cerradura, String estado)
-    {
-        this.id = id;
-        this.healthChecksPermitidos = healthChecksPermitidos;
-        this.cerradura=cerradura;
-        this.estado = estado;
+
+    public UsuarioDTO(String id, String nombre, String correo, List<String> claves, int telefono, String user) {
+       this.id = id;
+        this.nombre = nombre;
+        this.correo = correo;
+        this.telefono = telefono;
+        this.user1=user;
+        this.claves = claves;
+        
+
     }
 
     /**
@@ -68,45 +75,78 @@ public class HubDTO
     }
 
     /**
-     * @return the healthChecksPermitidos
+     * @return the nombre
      */
-    public int getHealthChecksPermitidos() {
-        return healthChecksPermitidos;
+    public String getNombre() {
+        return nombre;
     }
 
     /**
-     * @param healthChecksPermitidos the healthChecksPermitidos to set
+     * @param nombre the nombre to set
      */
-    public void setHealthChecksPermitidos(int healthChecksPermitidos) {
-        this.healthChecksPermitidos = healthChecksPermitidos;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    
+
+    /**
+     * @return the correo
+     */
+    public String getCorreo() {
+        return correo;
     }
 
     /**
-     * @return the cerradura
+     * @param correo the correo to set
      */
-    public String getCerradura() {
-        return cerradura;
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
 
     /**
-     * @param cerradura the cerradura to set
+     * @return the telefono
      */
-    public void setCerradura(String cerradura) {
-        this.cerradura = cerradura;
+    public int getTelefono() {
+        return telefono;
     }
 
     /**
-     * @return the estado
+     * @param telefono the telefono to set
      */
-    public String getEstado() {
-        return estado;
+    public void setTelefono(int telefono) {
+        this.telefono = telefono;
     }
 
     /**
-     * @param estado the estado to set
+     * @return the user1
      */
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public String getUser1() {
+        return user1;
+    }
+
+    /**
+     * @param user1 the user1 to set
+     */
+    public void setUser1(String user1) {
+        this.user1 = user1;
+    }
+
+    /**
+     * @return the claves
+     */
+    public List<String> getClaves() {
+        return claves;
+    }
+
+    /**
+     * @param claves the claves to set
+     */
+    public void setClaves(List<String> claves) {
+        this.claves = claves;
     }
     
+    
+    
 }
+

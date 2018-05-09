@@ -83,6 +83,17 @@ public class Persistencer<T, PK> {
         }
         return entity;
     }
+    
+    public T findClave(int clave) {
+        T entity;
+        try {
+            entity = entityManager.find(entityClass, clave);
+        } catch (NoResultException | NonUniqueResultException e) {
+            entity = null;
+            LOG.log(Level.WARNING, e.getMessage());
+        }
+        return entity;
+    }
 
     public List<T> all() {
         List<T> entities;

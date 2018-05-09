@@ -23,58 +23,65 @@
  */
 package co.edu.uniandes.isis2503.nosqljpa.model.dto.converter;
 
-
-import co.edu.uniandes.isis2503.nosqljpa.interfaces.IHubConverter;
-import co.edu.uniandes.isis2503.nosqljpa.model.dto.model.HubDTO;
-import co.edu.uniandes.isis2503.nosqljpa.model.entity.HubEntity;
+import co.edu.uniandes.isis2503.nosqljpa.interfaces.IAdministradorConverter;
+import co.edu.uniandes.isis2503.nosqljpa.interfaces.IUsuarioConverter;
+import co.edu.uniandes.isis2503.nosqljpa.model.dto.model.AdministradorDTO;
+import co.edu.uniandes.isis2503.nosqljpa.model.dto.model.UsuarioDTO;
+import co.edu.uniandes.isis2503.nosqljpa.model.entity.AdministradorEntity;
+import co.edu.uniandes.isis2503.nosqljpa.model.entity.UsuarioEntity;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  *
- * @author jd.carrillor
+ * @author af.leon
  */
-public class HubConverter implements IHubConverter {
+public class UsuarioConverter implements IUsuarioConverter {
 
-    public static IHubConverter CONVERTER = new HubConverter();
+    public static IUsuarioConverter CONVERTER = new UsuarioConverter();
 
-    public HubConverter() {
+    public UsuarioConverter() {
     }
 
-   
     @Override
-    public HubDTO entityToDto(HubEntity entity) {
-        HubDTO dto = new HubDTO();
+    public UsuarioDTO entityToDto(UsuarioEntity entity) {
+        UsuarioDTO dto = new UsuarioDTO();
         dto.setId(entity.getId());
-        dto.setCerradura(entity.getCerradura());
-        dto.setHealthChecksPermitidos(entity.getHealthChecksPermitidos());
-        dto.setEstado(entity.getEstado());
+        dto.setNombre(entity.getNombre());
+        dto.setCorreo(entity.getCorreo());
+        dto.setTelefono(entity.getTelefono());
+        dto.setUser1(entity.getUser());
+        dto.setClaves(entity.getClaves());
         return dto;
     }
 
     @Override
-    public HubEntity dtoToEntity(HubDTO dto) {
-        HubEntity entity = new HubEntity();
+    public UsuarioEntity dtoToEntity(UsuarioDTO dto) {
+        UsuarioEntity entity = new UsuarioEntity();
         entity.setId(dto.getId());
-        entity.setCerradura(dto.getCerradura());
-        entity.setHealthChecksPermitidos(dto.getHealthChecksPermitidos());
-        entity.setEstado(dto.getEstado());
+        entity.setNombre(dto.getNombre());
+        entity.setCorreo(dto.getCorreo());
+        entity.setTelefono(dto.getTelefono());
+        entity.setUser(dto.getUser1());
+        entity.setClaves(dto.getClaves());
+        
+
         return entity;
     }
 
     @Override
-    public List<HubDTO> listEntitiesToListDTOs(List<HubEntity> entities) {
-        ArrayList<HubDTO> dtos = new ArrayList<>();
-        for (HubEntity entity : entities) {
+    public List<UsuarioDTO> listEntitiesToListDTOs(List<UsuarioEntity> entities) {
+        ArrayList<UsuarioDTO> dtos = new ArrayList<>();
+        for (UsuarioEntity entity : entities) {
             dtos.add(entityToDto(entity));
         }
         return dtos;
     }
 
     @Override
-    public List<HubEntity> listDTOsToListEntities(List<HubDTO> dtos) {
-        ArrayList<HubEntity> entities = new ArrayList<>();
-        for (HubDTO dto : dtos) {
+    public List<UsuarioEntity> listDTOsToListEntities(List<UsuarioDTO> dtos) {
+        ArrayList<UsuarioEntity> entities = new ArrayList<>();
+        for (UsuarioDTO dto : dtos) {
             entities.add(dtoToEntity(dto));
         }
         return entities;

@@ -46,7 +46,7 @@ import javax.ws.rs.core.Response;
  * @author m.sicard10
  */
 @Path("/residencia")
-@Secured({Role.administrador, Role.propietario, Role.yale, Role.seguridadPrivada})
+//@Secured({Role.administrador, Role.propietario, Role.yale, Role.seguridadPrivada})
 @Produces(MediaType.APPLICATION_JSON)
 public class ResidenciaService {
     
@@ -59,6 +59,7 @@ public class ResidenciaService {
     }
 
     @POST
+    @Secured({Role.administrador, Role.yale})
     public ResidenciaDTO add(ResidenciaDTO dto) {
         return residenciaLogic.add(dto);
     }
@@ -74,6 +75,7 @@ public class ResidenciaService {
     //}
 
     @PUT
+    @Secured({Role.administrador, Role.yale})
     public ResidenciaDTO update(ResidenciaDTO dto) {
         return residenciaLogic.update(dto);
     }
@@ -90,6 +92,7 @@ public class ResidenciaService {
     }
 
     @DELETE
+    @Secured({Role.administrador, Role.yale})
     @Path("/{id}")
     public Response delete(@PathParam("id") String id) {
         try {

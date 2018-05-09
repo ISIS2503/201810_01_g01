@@ -23,22 +23,22 @@
  */
 package co.edu.uniandes.isis2503.nosqljpa.interfaces;
 
-
-import co.edu.uniandes.isis2503.nosqljpa.model.dto.model.ClaveDTO;
+import co.edu.uniandes.isis2503.nosqljpa.model.dto.model.UsuarioDTO;
+import co.edu.uniandes.isis2503.nosqljpa.model.entity.UsuarioEntity;
 import java.util.List;
 
 /**
  *
- * @author m.sicard10
+ * @author af.leon
  */
-public interface IClaveLogic 
+public interface IUsuarioConverter
 {
-  public ClaveDTO add(ClaveDTO dto);
-    public ClaveDTO update(ClaveDTO dto);
-    public ClaveDTO find(String id);
-    public ClaveDTO findClave(int id);
-    public List<ClaveDTO> all();
-    public Boolean delete(String id);   
-    
+   public UsuarioDTO entityToDto(UsuarioEntity entity);
+
+    public UsuarioEntity dtoToEntity(UsuarioDTO dto);
+
+    public List<UsuarioDTO> listEntitiesToListDTOs(List<UsuarioEntity> entities);
+
+    public List<UsuarioEntity> listDTOsToListEntities(List<UsuarioDTO> dtos);
     
 }

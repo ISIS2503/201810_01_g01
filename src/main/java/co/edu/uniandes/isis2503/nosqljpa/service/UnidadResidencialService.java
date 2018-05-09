@@ -49,7 +49,7 @@ import javax.ws.rs.core.Response;
  * @author m.sicard10
  */
 @Path("/unidadResidencial")
-@Secured({Role.administrador, Role.propietario, Role.yale, Role.seguridadPrivada})
+//@Secured({Role.administrador, Role.propietario, Role.yale, Role.seguridadPrivada})
 @Produces(MediaType.APPLICATION_JSON)
 public class UnidadResidencialService {
     
@@ -67,6 +67,7 @@ public class UnidadResidencialService {
     }
 
     @POST
+    @Secured({Role.administrador, Role.yale})
     @Path("{id}/residencia")
     public ResidenciaDTO addResidencia(@PathParam("id") String id, ResidenciaDTO dto) {
         UnidadResidencialDTO uniadad = unidadResidencialLogic.find(id);
@@ -77,6 +78,7 @@ public class UnidadResidencialService {
     }
 
     @PUT
+    @Secured({Role.administrador, Role.yale})
     public UnidadResidencialDTO update(UnidadResidencialDTO dto) {
         return unidadResidencialLogic.update(dto);
     }
@@ -86,6 +88,12 @@ public class UnidadResidencialService {
     public UnidadResidencialDTO find(@PathParam("id") String id) {
         return unidadResidencialLogic.find(id);
     }
+    
+    @GET
+    @Path("/{barrio}/alarmas/{barrio}")
+    public UnidadResidencialDTO findW(@PathParam("id") String id) {
+        return unidadResidencialLogic.find(id);
+    }
 
     @GET
     public List<UnidadResidencialDTO> all() {
@@ -93,6 +101,7 @@ public class UnidadResidencialService {
     }
 
     @DELETE
+    @Secured({Role.administrador, Role.yale})
     @Path("/{id}")
     public Response delete(@PathParam("id") String id) {
         try {

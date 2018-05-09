@@ -40,6 +40,10 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 /**
  *
@@ -49,6 +53,11 @@ import javax.ws.rs.core.Response;
 @Secured({Role.administrador, Role.propietario, Role.seguridadPrivada, Role.yale})
 @Produces(MediaType.APPLICATION_JSON)
 public class AlarmaService{
+    
+    private final String topic = "home";
+    private final String broker = "tcp://172.24.42.95:8083";
+    
+    MqttClient client;
     
  private final IAlarmaLogic alarmaLogic;
     //private final IRoomLogic roomLogic; IRIA UNIADAD RESIDENCIAL
@@ -61,6 +70,15 @@ public class AlarmaService{
     @POST
     public AlarmaDTO add(AlarmaDTO dto) {
         return alarmaLogic.add(dto);
+    }
+    
+    
+    @POST
+    @Path("/{id}/silenciar")
+    public String slienciarAlarma(@PathParam("id") String id) {
+        String mensajeAPublicar = "S;"+id;
+        enviarMQTT(mensajeAPublicar);
+        return "se silencio la alarma con ID"+" "+id;
     }
 
     //@POST
@@ -100,6 +118,41 @@ public class AlarmaService{
             Logger.getLogger(AdministradorService.class).log(Level.WARNING, e.getMessage());
             
             return Response.status(500).header("Access-Control-Allow-Origin", "*").entity("We found errors in your query, please contact the Web Admin.").build();
+        }
+    }
+ 
+    private void enviarMQTT(String content)
+    {
+        try
+        {
+        MqttClient client = new MqttClient(broker, MqttClient.generateClientId());
+        MqttConnectOptions connOpts = new MqttConnectOptions();
+        connOpts.setCleanSession(true);
+             
+        System.out.println("Connecting to broker: " + broker);
+             
+        client.connect(connOpts);
+             
+        System.out.println("Connected");
+        System.out.println("Publishing message: "+content);
+             
+        MqttMessage message = new MqttMessage(content.getBytes());
+        message.setQos(2);
+        client.publish(topic, message);
+             
+        System.out.println("Message published");
+             
+        client.disconnect();
+             
+        System.out.println("Disconnected");
+        //System.exit(0);
+        } catch(MqttException me) {
+             System.out.println("reason "+me.getReasonCode());
+             System.out.println("msg "+me.getMessage());
+             System.out.println("loc "+me.getLocalizedMessage());
+             System.out.println("cause "+me.getCause());
+             System.out.println("excep "+me);
+             me.printStackTrace();
         }
     }
     
