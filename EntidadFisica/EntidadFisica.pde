@@ -147,7 +147,28 @@ boolean bateriaMensaje = false;
 //contador bateria baja
 unsigned long contBateria = 0;
 
+//contador health check
+unsigned long conthealth = 0;
 
+//estado de silenciado
+boolean estadoS = false;
+
+void healthChek()
+{
+  if( millis()- conthealth>30000)
+  {
+    conthealth+=30000;
+    Serial.println("H");
+  }
+}
+
+void enviarMensaje(String r)
+{
+  if(!estadoS)
+  {
+    Serial.println(r);
+  }
+}
 
 
 void setup()
@@ -163,22 +184,17 @@ void setup()
   pinMode(BATTERY_LED,OUTPUT);
   pinMode(BATTERY_PIN,INPUT);
   addPassword(1111,1);
-  updatePassword(2222,1);
+  ingre = "";
 
 }
 
 void loop()
-{
-  ingre = "";
-  ingre.concat(((String)ingresados[0]).toInt());
-  ingre.concat(((String)ingresados[1]).toInt());
-  ingre.concat(((String)ingresados[2]).toInt());
-  ingre.concat(((String)ingresados[3]).toInt());
-  
+{ 
 
   receiveData();
   processData();
-
+  healthChek();
+  
   revisarBateria();
   revisarMovimiento();
   teclado();
@@ -188,8 +204,7 @@ void loop()
   if(contador >= espera) {
     darColor('R');
     if(!mensaje) {
-      Serial.println("2");
-      Serial1.println("2");
+      enviarMensaje("2");
     }//---------------------------------------------------
     mensaje = true; 
     digitalWrite(sonido,HIGH);
@@ -199,6 +214,7 @@ void loop()
     contadorPasado = millis();
     delay(10);
     contador += millis()- contadorPasado ;
+    digitalWrite(sonido,LOW);
   }
   else {
     darColor('B');
@@ -238,16 +254,16 @@ void teclado()
         digitalWrite(sonido,HIGH);
         delay(1000);
         contErrores++;
+        ingre="";
       }
       else {
         contDig = 0;
         contErrores = 0;
-        puertaAbierta = true;
+        confirmacion();
       }
       if(contErrores == 3) {
         if(!mensaje) {
-          Serial.println("0");
-          Serial1.println("0");//----------------------------------------------------------------------------------------------------
+          enviarMensaje("0");//----------------------------------------------------------------------------------------------------
           mensaje = true;
         }
         delay(espera);
@@ -257,6 +273,17 @@ void teclado()
       }
     }
   }
+}
+
+void confirmacion()
+{
+  Serial.println("V;" + ingre);
+  while(!stringComplete)
+  {
+      receiveData();
+  }
+  processData();
+  
 }
 
 void revisarBateria()
@@ -275,7 +302,7 @@ void revisarBateria()
     {
       contBateria = millis();
       bateriaMensaje = true;
-      Serial.println("3");//---------------------------------------------------
+      enviarMensaje("3");//---------------------------------------------------
     }
   }
   else {
@@ -291,7 +318,7 @@ void revisarMovimiento() {
     digitalWrite(ledRojo, HIGH);  // turn LED ON
     if (pirState == LOW) {
       // we have just turned on
-      Serial.println("1");//-----------------------------------------------
+      enviarMensaje("1");//-----------------------------------------------
       // We only want to print on the output change, not state
       pirState = HIGH;
     }
@@ -348,10 +375,17 @@ void registrarDigito(char key) {
   else if (key == '*')
   {
     puertaAbierta = false;
+    ingre="";
   }
   else {
     ingresados[contDig] = key;
+    ingre = ingre + key;
+    //Serial.println(ingre);
     contDig ++;
+    if(ingre.length()>4)
+    {
+     ingre = ""; 
+    }
   }
   //Serial.println(String(ingresados[0])+ " , " + String(ingresados[1]) + " , " + String(ingresados[2])+ " , " + String(ingresados[3]) );
 }
@@ -374,19 +408,40 @@ void processData() {
   if (stringComplete) {
     // Implementación...
     //Serial.println(inputString);
-
-    //String ress = pp(inputString);
-
-
-    String s[3];
+      inputString.trim();
+      if(inputString.startsWith("S"))
+    {
+        estadoS = !estadoS;
+        beep();
+    }
+    if(inputString.equals("R"))
+    {
+        darColor('R');
+        digitalWrite(sonido,HIGH);
+        delay(1000);
+        contErrores++;
+        ingre=""; 
+    }
+    if(inputString.equals("A"))
+    {
+        //Serial.println(ingre);
+        puertaAbierta = true;
+        //Serial.println("abrio");
+        //beep();
+    }else{
     
+    String s[3];
     StringSplit(inputString,';',s,3);
     String ress = s[0];
     String ress2 = s[1];
     String ress3 = s[2];
+    //Serial.println(ress);
+    //Serial.println(ress2);
+    //Serial.println(ress3);
     
     if(ress=="C")
         {
+          //Serial.println("cree");
           int index = ress2.toInt();
           int val = ress3.toInt();
           addPassword(val, index);
@@ -399,19 +454,20 @@ void processData() {
           updatePassword(val,index);
           beep();
         }
-        if(ress=="D")
+        if(ress=="D"&&compareKey(ress3))
         {
           int index = ress2.toInt();
           int val = ress3.toInt();
           deletePassword(index);
           beep();
         }
-        if(ress=="DD")
+        if(ress=="DD"&&compareKey(ress3))
         {
           deleteAllPasswords();
           beep();
         }
-    
+    }
+    inputString = "";
     stringComplete = false;
   }
 }
@@ -421,12 +477,15 @@ void processData() {
 int StringSplit(String sInput, char cDelim, String sParams[], int iMaxParams)
 {
     int iParamCount = 0;
-    int iPosDelim, iPosStart = 0;
+    int iPosDelim = 0;
+    int iPosStart = 0;
 
     do {
+      //Serial.println(iPosDelim);
+      //Serial.println(iPosStart);
         // Searching the delimiter using indexOf()
         iPosDelim = sInput.indexOf(cDelim,iPosStart);
-        if (iPosDelim > (iPosStart+1)) {
+        if (iPosDelim > 0) {
             // Adding a new parameter using substring() 
             sParams[iParamCount] = sInput.substring(iPosStart,iPosDelim);
             iParamCount++;
