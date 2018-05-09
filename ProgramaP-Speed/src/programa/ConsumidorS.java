@@ -33,7 +33,7 @@ public void correr()
     	client = new MqttClient("tcp://172.24.42.95:8083", MqttClient.generateClientId());
     	client.setCallback(this);
         client.connect();
-        client.subscribe("home");
+        client.subscribe("alarma");
     } 
     catch (MqttException e) {
         e.printStackTrace();
@@ -66,9 +66,13 @@ public void messageArrived(String topic, MqttMessage message)
 	{
 		tipo = "Puerta abierta";
 	}
-	else
+	else if(num.equals("3"))
 	{
 		tipo = "Batería crítica";
+	}
+	else
+	{
+		return;
 	}
 	
 	String timestamp = getCurrentTimeStamp();

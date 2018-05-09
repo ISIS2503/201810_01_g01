@@ -1,5 +1,7 @@
 package programa;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -33,7 +35,7 @@ public void correr()
     	client = new MqttClient("tcp://172.24.42.95:8083", MqttClient.generateClientId());
     	client.setCallback(this);
         client.connect();
-        client.subscribe("home");
+        client.subscribe("alarma");
     } 
     catch (MqttException e) {
         e.printStackTrace();
@@ -66,9 +68,48 @@ public void messageArrived(String topic, MqttMessage message)
 	{
 		tipo = "Puerta abierta";
 	}
-	else
+	else if(num.equals("3"))
 	{
 		tipo = "Batería crítica";
+	}
+	else
+	{
+		String[] msg = num.split(";");
+		
+		//Llamado del metodo
+		try{
+			URL url = new URL("http://172.24.42.78:8080/clave/validar/"+msg[1]);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			
+			conn.setRequestMethod("GET");
+			conn.setRequestProperty("Accept", "application/json");
+		
+			if (conn.getResponseCode() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : "
+					+ conn.getResponseCode());
+	        }
+
+			BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+
+				String output;
+				System.out.println("Output from Server .... \n");
+				while ((output = br.readLine()) != null) {
+					System.out.println(output);
+				}
+
+
+			conn.disconnect();
+			
+			
+			}catch (MalformedURLException e) {
+
+				e.printStackTrace();
+
+			} catch (IOException e) {
+
+				e.printStackTrace();
+
+			}
 	}
 	
 	String timestamp = getCurrentTimeStamp();
