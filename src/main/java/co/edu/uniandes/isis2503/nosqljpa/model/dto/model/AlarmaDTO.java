@@ -54,7 +54,7 @@ public class AlarmaDTO
       
     }
 
-    public AlarmaDTO(String id, String nombre, int tipo, Date fecha, String admin, String central, String propietario) {
+    public AlarmaDTO(String id, String nombre, int tipo, Date fecha, String admin, String central, String propietario, ResidenciaEntity residencia) {
         this.id = id;
         this.nombre = nombre;
         this.tipo = tipo;
@@ -62,6 +62,7 @@ public class AlarmaDTO
         this.admin=admin;
         this.central=central;
         this.propietario=propietario;
+        this.residencia=residencia;
         
     }
 

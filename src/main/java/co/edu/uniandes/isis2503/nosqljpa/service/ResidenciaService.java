@@ -27,8 +27,12 @@ import co.edu.uniandes.isis2503.nosqljpa.auth.AuthorizationFilter.Role;
 import co.edu.uniandes.isis2503.nosqljpa.auth.Secured;
 import co.edu.uniandes.isis2503.nosqljpa.interfaces.IResidenciaLogic;
 import co.edu.uniandes.isis2503.nosqljpa.logic.ResidenciaLogic;
+import co.edu.uniandes.isis2503.nosqljpa.model.dto.converter.AlarmaConverter;
+import co.edu.uniandes.isis2503.nosqljpa.model.dto.model.AlarmaDTO;
 import co.edu.uniandes.isis2503.nosqljpa.model.dto.model.ResidenciaDTO;
+import co.edu.uniandes.isis2503.nosqljpa.model.entity.AlarmaEntity;
 import com.sun.istack.logging.Logger;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import javax.ws.rs.DELETE;
@@ -49,6 +53,8 @@ import javax.ws.rs.core.Response;
 //@Secured({Role.administrador, Role.propietario, Role.yale, Role.seguridadPrivada})
 @Produces(MediaType.APPLICATION_JSON)
 public class ResidenciaService {
+    
+    private AlarmaConverter alarma1;
     
     private final IResidenciaLogic residenciaLogic;
     //private final IRoomLogic roomLogic; VA PROPIETARIO Y CERRADURA
@@ -84,6 +90,34 @@ public class ResidenciaService {
     @Path("/{id}")
     public ResidenciaDTO find(@PathParam("id") String id) {
         return residenciaLogic.find(id);
+    }
+    
+     @GET
+    @Path("/{id}/alarmas/{mes}")
+    public List<AlarmaDTO> findMes(@PathParam("id") String id, @PathParam("mes") int mes) 
+    {
+        ResidenciaDTO residencia = residenciaLogic.find(id);
+        
+        List<AlarmaEntity> alarmas = residencia.getAlarmas();
+        List<AlarmaDTO> alarmasN= new ArrayList();
+        
+        for(int i =0;i<alarmas.size();i++)
+        {
+            AlarmaEntity alarma = alarmas.get(i);
+            if(alarma.getFecha().getMonth()==mes)
+            {
+                alarma1= new AlarmaConverter();
+               
+                alarmasN.add( alarma1.entityToDto(alarma));
+            }
+        }
+        
+        
+        
+        
+        
+        
+        return alarmasN;
     }
 
     @GET

@@ -63,7 +63,7 @@ public class AlarmaEntity implements Serializable
  
     }
 
-    public AlarmaEntity(String id, String nombre, int tipo, Date fecha, String admin, String central, String propietario) {
+    public AlarmaEntity(String id, String nombre, int tipo, Date fecha, String admin, String central, String propietario, ResidenciaEntity residencia) {
         this.id = id;
         this.nombre = nombre;
         this.tipo = tipo;
@@ -71,6 +71,7 @@ public class AlarmaEntity implements Serializable
         this.admini=admin;
         this.central=central;
         this.propietario=propietario;
+        this.residencia=residencia;
         
     }
 
