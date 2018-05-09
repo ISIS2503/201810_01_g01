@@ -26,6 +26,7 @@ package co.edu.uniandes.isis2503.nosqljpa.model.dto.model;
 import co.edu.uniandes.isis2503.nosqljpa.model.entity.AdministradorEntity;
 import co.edu.uniandes.isis2503.nosqljpa.model.entity.CentralYaleEntity;
 import co.edu.uniandes.isis2503.nosqljpa.model.entity.PropietarioEntity;
+import co.edu.uniandes.isis2503.nosqljpa.model.entity.ResidenciaEntity;
 import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -44,7 +45,7 @@ public class AlarmaDTO
     
     private String central;
     
- 
+ private ResidenciaEntity residencia;
 
    private String propietario;
 
@@ -161,5 +162,22 @@ public class AlarmaDTO
     public void setPropietario(String propietario) {
         this.propietario = propietario;
     }
+
+    /**
+     * @return the residencia
+     */
+    public ResidenciaEntity getResidencia() {
+        return residencia;
+    }
+
+    /**
+     * @param residencia the residencia to set
+     */
+    public void setResidencia(ResidenciaEntity residencia) {
+        this.residencia = residencia;
+    }
+    
+     
+    
     
 }

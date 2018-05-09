@@ -50,6 +50,7 @@ public class AlarmaConverter implements IAlarmaConverter {
         dto.setAdmin(entity.getAdmin());
         dto.setCentral(entity.getCentral());
         dto.setPropietario(entity.getPropietario());
+        dto.setResidencia(entity.getResidencia());
         return dto;
     }
 
@@ -63,6 +64,7 @@ public class AlarmaConverter implements IAlarmaConverter {
         entity.setAdmin(dto.getAdmin());
         entity.setCentral(dto.getCentral());
         entity.setPropietario(dto.getPropietario());
+        entity.setResidencia(dto.getResidencia());
         return entity;
         
     }

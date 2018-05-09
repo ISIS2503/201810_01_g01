@@ -50,7 +50,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
  * @author m.sicard10
  */
 @Path("/alarma")
-@Secured({Role.administrador, Role.propietario, Role.seguridadPrivada, Role.yale})
+//@Secured({Role.administrador, Role.propietario, Role.seguridadPrivada, Role.yale})
 @Produces(MediaType.APPLICATION_JSON)
 public class AlarmaService{
     

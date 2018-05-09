@@ -51,6 +51,7 @@ public class ResidenciaConverter implements IResidenciaConverter {
         dto.setApartamento(entity.getApartamento());
         dto.setCerradura(entity.getCerradura());
         dto.setPropietario(entity.getPropietario());
+        dto.setAlarmas(entity.getAlarmas());
         return dto;
     }
 
@@ -65,6 +66,7 @@ public class ResidenciaConverter implements IResidenciaConverter {
         entity.setApartamento(dto.getApartamento());
         entity.setCerradura(dto.getCerradura());
         entity.setPropietario(dto.getPropietario());
+        entity.setAlarmas(dto.getAlarmas());
         return entity;
     }
 

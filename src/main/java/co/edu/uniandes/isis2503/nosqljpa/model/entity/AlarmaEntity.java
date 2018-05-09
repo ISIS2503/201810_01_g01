@@ -27,6 +27,7 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -54,6 +55,9 @@ public class AlarmaEntity implements Serializable
    private String central;
    
    private String propietario;
+   
+   @ManyToOne
+   private ResidenciaEntity residencia;
 
     public AlarmaEntity() {
  
@@ -166,6 +170,22 @@ public class AlarmaEntity implements Serializable
      */
     public void setPropietario(String propietario) {
         this.propietario = propietario;
+    }
+
+   
+
+    /**
+     * @return the residencia
+     */
+    public ResidenciaEntity getResidencia() {
+        return residencia;
+    }
+
+    /**
+     * @param residencia the residencia to set
+     */
+    public void setResidencia(ResidenciaEntity residencia) {
+        this.residencia = residencia;
     }
     
 }

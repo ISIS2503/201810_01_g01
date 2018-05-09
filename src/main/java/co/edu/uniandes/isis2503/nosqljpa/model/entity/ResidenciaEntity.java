@@ -24,8 +24,10 @@
 package co.edu.uniandes.isis2503.nosqljpa.model.entity;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -52,12 +54,15 @@ public class ResidenciaEntity implements Serializable {
     private String cerradura;
     
     private String propietario;
-
+    
+    @OneToMany
+    private List<AlarmaEntity> alarmas;
+    
     public ResidenciaEntity() {
  
     }
 
-    public ResidenciaEntity(String id, String torre, String zona, String piso, String tipo, String apartamento, String cerradura, String propietario) {
+    public ResidenciaEntity(String id, String torre, String zona, String piso, String tipo, String apartamento, String cerradura, String propietario,List<AlarmaEntity> alarmas) {
         this.id = id;
         this.torre = torre;
         this.zona = zona;
@@ -66,6 +71,7 @@ public class ResidenciaEntity implements Serializable {
         this.apartamento = apartamento;
         this.cerradura = cerradura;
         this.propietario = propietario;
+        this.alarmas = alarmas;
     }
 
     /**
@@ -178,6 +184,28 @@ public class ResidenciaEntity implements Serializable {
      */
     public void setPropietario(String propietario) {
         this.propietario = propietario;
+    }
+
+    /**
+     * @return the alarmas
+     */
+    public List<AlarmaEntity> getAlarmas() {
+        return alarmas;
+    }
+
+    /**
+     * @param alarmas the alarmas to set
+     */
+    public void setAlarmas(List<AlarmaEntity> alarmas) {
+        this.alarmas = alarmas;
+    }
+    
+    
+    /**
+     * @param alarmas the alarmas to set
+     */
+    public void addAlarma(AlarmaEntity alarmas) {
+        this.alarmas.add(alarmas);
     }
   
 }
