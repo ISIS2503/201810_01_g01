@@ -38,12 +38,26 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class ConsumidorS implements MqttCallback {
 
+public final static int PERMITIDOS = 2;
+public final static String LOCK_OFF = "CERRADURA FUERA DE LINEA";
+public final static String LOCK_ON = "CERRADURA EN LINEA";
+public final static String HUB_OFF = "HUB FUERA DE LINEA";
+public final static String HUB_ON = "HUB EN LINEA";
+	
 MqttClient client;
 String caFilePath = "certs/m2mqtt_ca.crt";
 String clientCrtFilePath = "certs/m2mqtt_srv.crt";
 String clientKeyFilePath = "certs/m2mqtt_srv.key";
+long lock_last = System.currentTimeMillis();
+long hub_last = System.currentTimeMillis();
+int cont_lock = 0;
+int cont_hub = 0;
+boolean lock_online = true;
+boolean hub_online = true;
 
-public ConsumidorS() {
+public ConsumidorS() 
+{
+	
 }
 
 public static void main(String[] args) 
@@ -56,10 +70,10 @@ public void correr()
 	try 
 	{
 		//CONECION MQTT
-    	client = new MqttClient("ssl://172.24.41.201:8083", MqttClient.generateClientId());
+    	client = new MqttClient("tcp://172.24.42.95:8083", MqttClient.generateClientId());
     	client.setCallback(this);
     	MqttConnectOptions options = new MqttConnectOptions();
-    	options.setUserName("microcontrolador");
+    	/*options.setUserName("microcontrolador");
     	options.setPassword("Isis2503.".toCharArray());
     	
     	options.setConnectionTimeout(60);
@@ -70,10 +84,69 @@ public void correr()
 		SSLSocketFactory socketFactory = getSocketFactory(caFilePath,
 				clientCrtFilePath, clientKeyFilePath, "Isis2503.");
 		options.setSocketFactory(socketFactory);
-
+        */
     	
     	client.connect(options);
-        client.subscribe("alarma");
+        client.subscribe("1/1/alarma");
+        
+        while(true)
+        {
+        	Thread.sleep(30 * 1000);
+        	
+        	long now = System.currentTimeMillis();
+        	
+        	//CERRADURA
+        	if(now-lock_last>30*1000)
+        	{
+        		cont_lock++;
+        	}
+        	else
+        	{
+        		if(!lock_online)
+        		{
+        			cont_lock=0;
+        			lock_online=true;
+        			publish(LOCK_ON);
+        		}
+        	}
+        	
+        	if(cont_lock>PERMITIDOS)
+        	{
+        		if(lock_online)
+        		{
+        			System.out.println(LOCK_OFF);
+        			lock_online=false;
+        			publish(LOCK_OFF);
+        			sendMail(LOCK_OFF);
+        		}
+        	}
+        	
+        	//HUB
+        	if(now-hub_last>30*1000)
+        	{
+        		cont_hub++;
+        	}
+        	else
+        	{
+        		if(!hub_online)
+        		{
+        			cont_hub=0;
+        			hub_online=true;
+        			publish(HUB_ON);
+        		}
+        	}
+        	
+        	if(cont_hub>PERMITIDOS)
+        	{
+        		if(hub_online)
+        		{
+        			System.out.println(HUB_OFF);
+        			hub_online=false;
+        			publish(HUB_OFF);
+        			sendMail(HUB_OFF);
+        		}
+        	}
+        }
     } 
     catch (MqttException e) {
         e.printStackTrace();
@@ -93,8 +166,9 @@ public void connectionLost(Throwable cause)
 public void messageArrived(String topic, MqttMessage message)
 		throws Exception 
 {
-	String num = message.toString();
+	String num = message.toString().trim();
 	String tipo = "";
+	System.out.println(num);
 	
 	if(num.equals("0"))
 	{
@@ -112,6 +186,18 @@ public void messageArrived(String topic, MqttMessage message)
 	{
 		tipo = "Batería crítica";
 	}
+	else if(num.equals("H"))
+	{
+		lock_last=System.currentTimeMillis();
+		
+		return;
+	}
+	else if(num.equals("B"))
+	{
+		hub_last=System.currentTimeMillis();
+		
+		return;
+	}
 	else
 	{
 		return;
@@ -121,40 +207,7 @@ public void messageArrived(String topic, MqttMessage message)
 	String msg = tipo+" - "+ timestamp;
 	
 	//CORREO
-	
-	try{
-		URL url = new URL("http://172.24.42.87:8081/mail");
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		conn.setDoOutput(true);
-		conn.setRequestMethod("POST");
-		conn.setRequestProperty("Content-Type", "application/json");
-
-		String input = "{\"asunto\":\"Alarma\",\"remitente\":\"m.rodriguez21@uniandes.edu.co\","
-				+ "\"cuerpo\":\""+msg+"\","
-				+ "\"destinatarios\": [\"jr.restom10@uniandes.edu.co\"]}";
-
-		OutputStream os = conn.getOutputStream();
-		os.write(input.getBytes());
-		os.flush();
-		
-		if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
-			throw new RuntimeException("Failed : HTTP error code : "
-				+ conn.getResponseCode());
-        }
-
-		System.out.println(input);
-
-		conn.disconnect();
-		
-		}catch (MalformedURLException e) {
-
-			e.printStackTrace();
-
-		} catch (IOException e) {
-
-			e.printStackTrace();
-
-		}
+	sendMail(msg);
 
 }
 
@@ -240,4 +293,76 @@ private static SSLSocketFactory getSocketFactory(final String caCrtFile,
 	return context.getSocketFactory();
 }
 
+private void publish(String content)
+{
+	 try {
+		 String topic = "1/1/monitoreo";
+		 String broker = "tcp://172.24.42.95:8083";
+		 MqttClient client = new MqttClient(broker, MqttClient.generateClientId());
+        MqttConnectOptions connOpts = new MqttConnectOptions();
+        connOpts.setCleanSession(true);
+        
+        System.out.println("Connecting to broker: " + broker);
+        
+        client.connect(connOpts);
+        
+        System.out.println("Connected");
+        System.out.println("Publishing message: "+content);
+        
+        MqttMessage message = new MqttMessage(content.getBytes());
+        message.setQos(2);
+        client.publish(topic, message);
+        
+        System.out.println("Message published");
+        
+        client.disconnect();
+        
+        //System.out.println("Disconnected");
+        //System.exit(0);
+    } catch(MqttException me) {
+        System.out.println("reason "+me.getReasonCode());
+        System.out.println("msg "+me.getMessage());
+        System.out.println("loc "+me.getLocalizedMessage());
+        System.out.println("cause "+me.getCause());
+        System.out.println("excep "+me);
+        me.printStackTrace();
+    }
+}
+
+private void sendMail(String cuerpo)
+{
+	try{
+			URL url = new URL("http://172.24.42.87:8081/mail");
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setDoOutput(true);
+			conn.setRequestMethod("POST");
+			conn.setRequestProperty("Content-Type", "application/json");
+
+			String input = "{\"asunto\":\"Alarma\",\"remitente\":\"m.rodriguez21@uniandes.edu.co\","
+					+ "\"cuerpo\":\""+cuerpo+"\","
+					+ "\"destinatarios\": [\"jr.restom10@uniandes.edu.co\"]}";
+
+			OutputStream os = conn.getOutputStream();
+			os.write(input.getBytes());
+			os.flush();
+			
+			if (conn.getResponseCode() != 204) {
+				throw new RuntimeException("Failed : HTTP error code : "
+					+ conn.getResponseCode());
+	        }
+
+			System.out.println(input);
+
+			conn.disconnect();
+			
+			}catch (MalformedURLException e) {
+
+				e.printStackTrace();
+
+			} catch (IOException e) {
+
+				e.printStackTrace();
+
+			}
+	}
 }

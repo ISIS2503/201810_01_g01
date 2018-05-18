@@ -59,10 +59,10 @@ public void correr()
 	try 
 	{
 		//CONECION MQTT
-		client = new MqttClient("ssl://172.24.41.201:8083", MqttClient.generateClientId());
+		client = new MqttClient("tcp://172.24.42.95:8083", MqttClient.generateClientId());
     	client.setCallback(this);
     	MqttConnectOptions options = new MqttConnectOptions();
-    	options.setUserName("microcontrolador");
+    	/*options.setUserName("microcontrolador");
     	options.setPassword("Isis2503.".toCharArray());
     	
     	options.setConnectionTimeout(60);
@@ -73,9 +73,9 @@ public void correr()
 		SSLSocketFactory socketFactory = getSocketFactory(caFilePath,
 				clientCrtFilePath, clientKeyFilePath, "Isis2503.");
 		options.setSocketFactory(socketFactory);
-		
+		*/
         client.connect(options);
-        client.subscribe("alarma");
+        client.subscribe("1/1/alarma");
     } 
     catch (MqttException e) {
         e.printStackTrace();
@@ -96,7 +96,7 @@ public void connectionLost(Throwable cause)
 public void messageArrived(String topic, MqttMessage message)
 		throws Exception 
 {
-	String num = message.toString();
+	String num = message.toString().trim();
 	String tipo = "";
 	
 	if(num.equals("0"))
@@ -115,7 +115,12 @@ public void messageArrived(String topic, MqttMessage message)
 	{
 		tipo = "Batería crítica";
 	}
-	else
+	else if(num.equals("R"))
+	{
+		System.out.println("Rechazado");
+		return;
+	}
+	else 
 	{
 		String[] msg = num.split(";");
 		
@@ -153,6 +158,7 @@ public void messageArrived(String topic, MqttMessage message)
 				e.printStackTrace();
 
 			}
+		return;
 	}
 	
 	String timestamp = getCurrentTimeStamp();
@@ -160,7 +166,7 @@ public void messageArrived(String topic, MqttMessage message)
 	//PERSISTENCIA
 	
 	try{
-		URL url = new URL("http://172.24.42.78:8080/administrador/1/alarmas");
+		URL url = new URL("http://172.24.42.78:8080/administrador/2/alarmas");
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setDoOutput(true);
 		conn.setRequestMethod("POST");
@@ -174,7 +180,7 @@ public void messageArrived(String topic, MqttMessage message)
 		os.write(input.getBytes());
 		os.flush();
 		
-		if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
+		if (conn.getResponseCode() != 200) {
 			throw new RuntimeException("Failed : HTTP error code : "
 				+ conn.getResponseCode());
         }
