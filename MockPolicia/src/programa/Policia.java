@@ -1,5 +1,6 @@
 package programa;
-
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -7,13 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-
 import java.security.KeyPair;
 import java.security.KeyStore;
 import java.security.Security;
@@ -32,6 +28,7 @@ import org.bouncycastle.openssl.PEMKeyPair;
 import org.bouncycastle.openssl.PEMParser;
 import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
 import org.bouncycastle.openssl.jcajce.JcePEMDecryptorProviderBuilder;
+
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -39,27 +36,34 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-public class ConsumidorB implements MqttCallback {
-
+public class Policia implements MqttCallback {
+	
 MqttClient client;
 String caFilePath = "certs/m2mqtt_ca.crt";
 String clientCrtFilePath = "certs/m2mqtt_srv.crt";
 String clientKeyFilePath = "certs/m2mqtt_srv.key";
 
-public ConsumidorB() {
+private Interfaz interfaz;
+
+public Policia() 
+{
+	
 }
 
 public static void main(String[] args) 
 {
-    new ConsumidorB().correr();
+    new Policia().correr();    
 }
 
 public void correr() 
 {	
+	interfaz = new Interfaz( );
+    interfaz.setVisible( true );
+    
 	try 
 	{
 		//CONECION MQTT
-		client = new MqttClient("tcp://172.24.42.95:8083", MqttClient.generateClientId());
+    	client = new MqttClient("tcp://172.24.42.95:8083", MqttClient.generateClientId());
     	client.setCallback(this);
     	MqttConnectOptions options = new MqttConnectOptions();
     	/*options.setUserName("microcontrolador");
@@ -73,16 +77,16 @@ public void correr()
 		SSLSocketFactory socketFactory = getSocketFactory(caFilePath,
 				clientCrtFilePath, clientKeyFilePath, "Isis2503.");
 		options.setSocketFactory(socketFactory);
-		*/
-        client.connect(options);
+        */
+    	
+    	client.connect(options);
         client.subscribe("1.1.alarma");
     } 
     catch (MqttException e) {
         e.printStackTrace();
-    }
-	catch (Exception e) {
-        e.printStackTrace();
-    }
+    } catch (Exception e) {
+		e.printStackTrace();
+}
 }
 
 @Override
@@ -97,108 +101,20 @@ public void messageArrived(String topic, MqttMessage message)
 		throws Exception 
 {
 	String num = message.toString().trim();
-	String tipo = "";
+	String alerta = "";
+	System.out.println(num);
 	
-	if(num.equals("0"))
+	if(num.equals("4"))
 	{
-		tipo = "Apertura sospechosa";
+		alerta= "Posible secuestro en: Cra 3 # 21-46 ";
+		interfaz.enviarAlerta(alerta);
 	}
-	else if(num.equals("1"))
+	
+	else
 	{
-		tipo = "Apertura no permitida";
-	}
-	else if(num.equals("2"))
-	{
-		tipo = "Puerta abierta";
-	}
-	else if(num.equals("3"))
-	{
-		tipo = "Batería crítica";
-	}
-	else if(num.equals("R"))
-	{
-		System.out.println("Rechazado");
 		return;
 	}
-	else 
-	{
-		String[] msg = num.split(";");
-		
-		//Llamado del metodo
-		try{
-			URL url = new URL("http://172.24.42.78:8080/clave/validar/"+msg[1]);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			
-			conn.setRequestMethod("GET");
-			conn.setRequestProperty("Accept", "application/json");
-		
-			if (conn.getResponseCode() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : "
-					+ conn.getResponseCode());
-	        }
 
-			BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
-
-				String output;
-				System.out.println("Output from Server .... \n");
-				while ((output = br.readLine()) != null) {
-					System.out.println(output);
-				}
-
-
-			conn.disconnect();
-			
-			
-			}catch (MalformedURLException e) {
-
-				e.printStackTrace();
-
-			} catch (IOException e) {
-
-				e.printStackTrace();
-
-			}
-		return;
-	}
-	
-	String timestamp = getCurrentTimeStamp();
-	
-	//PERSISTENCIA
-	
-	try{
-		URL url = new URL("http://172.24.42.78:8080/administrador/2/alarmas");
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		conn.setDoOutput(true);
-		conn.setRequestMethod("POST");
-		conn.setRequestProperty("Content-Type", "application/json");
-
-		String input = "{\"nombre\":\""+tipo+"\","
-				+ "\"tipo\":"+num+","
-				+ "\"fecha\":\""+timestamp+"\"}";
-
-		OutputStream os = conn.getOutputStream();
-		os.write(input.getBytes());
-		os.flush();
-		
-		if (conn.getResponseCode() != 200) {
-			throw new RuntimeException("Failed : HTTP error code : "
-				+ conn.getResponseCode());
-        }
-
-		System.out.println(input);
-
-		conn.disconnect();
-		
-		}catch (MalformedURLException e) {
-
-			e.printStackTrace();
-
-		} catch (IOException e) {
-
-			e.printStackTrace();
-
-		}
-	
 }
 
 @Override
@@ -283,4 +199,76 @@ private static SSLSocketFactory getSocketFactory(final String caCrtFile,
 	return context.getSocketFactory();
 }
 
+private void publish(String content)
+{
+	 try {
+		 String topic = "1/1/monitoreo";
+		 String broker = "tcp://172.24.42.95:8083";
+		 MqttClient client = new MqttClient(broker, MqttClient.generateClientId());
+        MqttConnectOptions connOpts = new MqttConnectOptions();
+        connOpts.setCleanSession(true);
+        
+        System.out.println("Connecting to broker: " + broker);
+        
+        client.connect(connOpts);
+        
+        System.out.println("Connected");
+        System.out.println("Publishing message: "+content);
+        
+        MqttMessage message = new MqttMessage(content.getBytes());
+        message.setQos(2);
+        client.publish(topic, message);
+        
+        System.out.println("Message published");
+        
+        client.disconnect();
+        
+        //System.out.println("Disconnected");
+        //System.exit(0);
+    } catch(MqttException me) {
+        System.out.println("reason "+me.getReasonCode());
+        System.out.println("msg "+me.getMessage());
+        System.out.println("loc "+me.getLocalizedMessage());
+        System.out.println("cause "+me.getCause());
+        System.out.println("excep "+me);
+        me.printStackTrace();
+    }
+}
+
+private void sendMail(String cuerpo)
+{
+	try{
+			URL url = new URL("http://172.24.42.87:8081/mail");
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setDoOutput(true);
+			conn.setRequestMethod("POST");
+			conn.setRequestProperty("Content-Type", "application/json");
+
+			String input = "{\"asunto\":\"Alarma\",\"remitente\":\"m.rodriguez21@uniandes.edu.co\","
+					+ "\"cuerpo\":\""+cuerpo+"\","
+					+ "\"destinatarios\": [\"jr.restom10@uniandes.edu.co\"]}";
+
+			OutputStream os = conn.getOutputStream();
+			os.write(input.getBytes());
+			os.flush();
+			
+			if (conn.getResponseCode() != 204) {
+				throw new RuntimeException("Failed : HTTP error code : "
+					+ conn.getResponseCode());
+	        }
+
+			System.out.println(input);
+
+			conn.disconnect();
+			
+			}catch (MalformedURLException e) {
+
+				e.printStackTrace();
+
+			} catch (IOException e) {
+
+				e.printStackTrace();
+
+			}
+	}
 }
