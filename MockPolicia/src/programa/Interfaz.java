@@ -73,7 +73,10 @@ public class Interfaz extends JFrame
         
         JPanel panelAux = new JPanel( );
         panelAux.setLayout( new BorderLayout( ) );
-        panelAux.setBorder( new TitledBorder( "Plataforma alertas de secuestro" ) );
+        TitledBorder bor = new TitledBorder( "Plataforma de alertas silenciosas" );
+        bor.setTitleFont(new Font("SansSerif", Font.BOLD, 20));
+        bor.setTitleJustification(2);
+        panelAux.setBorder( bor  );
         
         panelAlerta = new PanelAlerta( this );
         panelAux.add( panelAlerta, BorderLayout.CENTER );

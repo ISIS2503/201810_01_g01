@@ -80,7 +80,7 @@ public void correr()
         */
     	
     	client.connect(options);
-        client.subscribe("1.1.alarma");
+        client.subscribe("1/1/alarma");
     } 
     catch (MqttException e) {
         e.printStackTrace();

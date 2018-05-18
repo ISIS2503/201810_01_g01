@@ -70,7 +70,7 @@ public class PanelAlerta extends JPanel
 
         txtAlerta = new JTextField( );
         txtAlerta.setEditable( false );
-        Font font1 = new Font("SansSerif", Font.BOLD, 20);
+        Font font1 = new Font("SansSerif", Font.PLAIN, 16);
         txtAlerta.setFont(font1);
         add( txtAlerta );
     }
@@ -85,7 +85,7 @@ public class PanelAlerta extends JPanel
      */
     public void actualizar( String alerta )
     {
-        txtAlerta.setText(txtAlerta.getText()+"\n"+alerta);
+        txtAlerta.setText(txtAlerta.getText()+"\n - "+alerta);
     }
 
 }
