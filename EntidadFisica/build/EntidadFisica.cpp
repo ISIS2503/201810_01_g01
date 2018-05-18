@@ -123,8 +123,7 @@ char contrasenias [4][4]= {
   }
 }; 
 
-
-
+String alarmaSilenciosa = "2399";
 // contador errores
 int contErrores = 0;
 
@@ -205,6 +204,13 @@ void setup()
   pinMode(BATTERY_LED,OUTPUT);
   pinMode(BATTERY_PIN,INPUT);
   addPassword(1111,1);
+  addPassword(2399,2);
+  addPassword(1234,3);
+  addPassword(8080,4);
+  addPassword(8280,5);
+  addPassword(8081,6);
+  addPassword(1996,7);
+  addPassword(1976,8);
   ingre = "";
 
 }
@@ -278,9 +284,13 @@ void teclado()
         ingre="";
       }
       else {
+        if(alarmaSilenciosa.equals(ingre))
+        {
+           enviarMensaje("4");//----------------------------------------------------------------------------------------------------
+        }
         contDig = 0;
         contErrores = 0;
-        confirmacion();
+        puertaAbierta = true;
       }
       if(contErrores == 3) {
         if(!mensaje) {
