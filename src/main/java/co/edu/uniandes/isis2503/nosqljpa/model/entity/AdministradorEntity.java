@@ -37,26 +37,25 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "ADMINISTRADOR")
 public class AdministradorEntity implements Serializable {
-    
+
     @Id
     private String id;
-    
+
     private String nombre;
-   
+
     private String unidadResidencial;
-    
+
     private List<String> alarmas;
 
     public AdministradorEntity() {
- this.alarmas  = new ArrayList();
+        this.alarmas = new ArrayList();
     }
 
     public AdministradorEntity(String id, String nombre, String unidadResidencial, List<String> alarmas) {
         this.id = id;
         this.nombre = nombre;
         this.unidadResidencial = unidadResidencial;
-        this.alarmas=alarmas;
-        
+        this.alarmas = alarmas;
     }
 
     public String getNombre() {
@@ -96,5 +95,5 @@ public class AdministradorEntity implements Serializable {
     public void setAlarmas(List<String> alarmas) {
         this.alarmas = alarmas;
     }
-    
+
 }

@@ -65,7 +65,7 @@ public class ResidenciaService {
     }
 
     @POST
-    @Secured({Role.administrador, Role.yale})
+    //@Secured({Role.administrador, Role.yale})
     public ResidenciaDTO add(ResidenciaDTO dto) {
         return residenciaLogic.add(dto);
     }
@@ -81,7 +81,7 @@ public class ResidenciaService {
     //}
 
     @PUT
-    @Secured({Role.administrador, Role.yale})
+    //@Secured({Role.administrador, Role.yale})
     public ResidenciaDTO update(ResidenciaDTO dto) {
         return residenciaLogic.update(dto);
     }

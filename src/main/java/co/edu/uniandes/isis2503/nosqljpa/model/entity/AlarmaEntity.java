@@ -38,29 +38,29 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "ALARMA")
-public class AlarmaEntity implements Serializable 
-{
+public class AlarmaEntity implements Serializable {
+
     @Id
     private String id;
-    
+
     private String nombre;
-   
+
     private int tipo;
-    
-   @Temporal(TemporalType.DATE)
+
+    @Temporal(TemporalType.DATE)
     private Date fecha;
-   
-   private String admini;
-   
-   private String central;
-   
-   private String propietario;
-   
-   @ManyToOne
-   private ResidenciaEntity residencia;
+
+    private String admini;
+
+    private String central;
+
+    private String propietario;
+
+    @ManyToOne
+    private ResidenciaEntity residencia;
 
     public AlarmaEntity() {
- 
+
     }
 
     public AlarmaEntity(String id, String nombre, int tipo, Date fecha, String admin, String central, String propietario, ResidenciaEntity residencia) {
@@ -68,11 +68,11 @@ public class AlarmaEntity implements Serializable
         this.nombre = nombre;
         this.tipo = tipo;
         this.fecha = fecha;
-        this.admini=admin;
-        this.central=central;
-        this.propietario=propietario;
-        this.residencia=residencia;
-        
+        this.admini = admin;
+        this.central = central;
+        this.propietario = propietario;
+        this.residencia = residencia;
+
     }
 
     /**
@@ -173,8 +173,6 @@ public class AlarmaEntity implements Serializable
         this.propietario = propietario;
     }
 
-   
-
     /**
      * @return the residencia
      */
@@ -188,5 +186,5 @@ public class AlarmaEntity implements Serializable
     public void setResidencia(ResidenciaEntity residencia) {
         this.residencia = residencia;
     }
-    
+
 }

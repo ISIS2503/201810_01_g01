@@ -56,38 +56,38 @@ import javax.ws.rs.core.Response;
 //@Secured({Role.yale, Role.administrador})
 @Produces(MediaType.APPLICATION_JSON)
 public class AdministradorService {
-    
+
     private final IAdministradorLogic administradorLogic;
     //private final IRoomLogic roomLogic; IRIA UNIADAD RESIDENCIAL
     private final IAlarmaLogic alarmaLogic;
-    
+
     private final IAlarmaConverter conver;
-    
+
     private final IAdministradorConverter converAdm;
 
     public AdministradorService() {
         this.administradorLogic = new AdministradorLogic();
         this.alarmaLogic = new AlarmaLogic();
-        this.conver= new AlarmaConverter();
-        this.converAdm= new AdministradorConverter();
+        this.conver = new AlarmaConverter();
+        this.converAdm = new AdministradorConverter();
         //this.roomLogic = new RoomLogic(); IRIA UNIADAD RESIDENCIAL
     }
 
+    @Secured({Role.yale})
     @POST
     public AdministradorDTO add(AdministradorDTO dto) {
         return administradorLogic.add(dto);
     }
-    
 
     @POST
     @Path("{id}/alarmas")
     public AlarmaDTO addRoom(@PathParam("id") String id, AlarmaDTO dto) {
         AdministradorDTO floor = administradorLogic.find(id);
         floor.addtAlarmas(dto.getNombre());
-        AlarmaDTO resul= alarmaLogic.add(dto);
+        AlarmaDTO resul = alarmaLogic.add(dto);
         resul.setAdmin(floor.getId());
         administradorLogic.update(floor);
-       
+
         return resul;
     }
 
@@ -98,36 +98,36 @@ public class AdministradorService {
 
     @GET
     @Path("/{id}")
+    @Secured({Role.yale})
     public AdministradorDTO find(@PathParam("id") String id) {
         return administradorLogic.find(id);
     }
-    
-    
 
     @GET
     @Path("{id}/alarmas")
+    @Secured({Role.yale})
     public List<String> addRoom(@PathParam("id") String id) {
         AdministradorDTO admin = administradorLogic.find(id);
-        
+
         return (admin.getAlarmas());
     }
 
     //@GET
     //@Path("{id}/alarmas")
     //public List<String> addRoom(@PathParam("id") String id) {
-      //  AdministradorDTO admin = administradorLogic.find(id);
-        
-        //return conver.listEntitiesToListDTOs(admin.getAlarmas());
+    //  AdministradorDTO admin = administradorLogic.find(id);
+    //return conver.listEntitiesToListDTOs(admin.getAlarmas());
     //}
-
-
+    
     @GET
+    @Secured({Role.yale})
     public List<AdministradorDTO> all() {
         return administradorLogic.all();
     }
 
     @DELETE
     @Path("/{id}")
+    @Secured({Role.yale})
     public Response delete(@PathParam("id") String id) {
         try {
             administradorLogic.delete(id);
